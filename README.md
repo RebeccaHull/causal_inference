@@ -1,9 +1,9 @@
-# Causal Inference
+# Causal Inference Project
 
 
 ## Description
 
-My project.
+My Causal Inference project.
 
 ## Project Organization
 
