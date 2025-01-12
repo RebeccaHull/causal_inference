@@ -3,7 +3,7 @@
 
 ## Description
 
-My Causal Inference project.
+My Causal Inference project idea is to study if participation in an airline loyalty program (ex: frequent flyer) causally increases passenger retention. Basically, I want to see if the passenger who sign up stay longer than those who don't and also see if it is causally linked. I need to look up some data, but I think BTS, Kaggle, and OpenFlights might be a good place to start. Let me know your feedback!
 
 ## Project Organization
 
