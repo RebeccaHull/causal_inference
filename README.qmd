@@ -17,6 +17,10 @@ My story is that I believe that the higher your status on your loyalty card, the
 
 https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-impact-on-flights/data
 
+This is my Causal Inference DAG:
+
+![DAG](figures/Updated_Loyalty_CLV_DAG.png)
+
 ## Project Organization
 
 - `/code` Scripts with prefixes (e.g., `01_import-data.py`, `02_clean-data.py`) and functions in `/code/src`.
