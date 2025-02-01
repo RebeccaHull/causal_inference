@@ -31,6 +31,33 @@ This is my Causal Inference DAG:
 
 ![DAG](figures/DAG_CLV.jpg)
 
+Based on the DAG, here are all possible paths (23 paths) from LCS
+(Loyalty Card Status) to CLV (Customer Lifetime Value):
+
+- LCS, CLV
+- LCS, I, CLV
+- LCS, I, TF, CLV
+- LCS, I, TF, FD, CLV
+- LCS, I, TF, CMS, CLV
+- LCS, I, TF, CMS, CE, CLV
+- LCS, TF, CLV
+- LCS, TF, I, CLV
+- LCS, TF, FD, CLV
+- LSC, TF, CMS, CLV
+- LCS, TF, CMS, CE, CLV
+- LCS, CMS, CLV
+- LCS, CMS, CE, CLV
+- LCS, CMS, TF, CLV
+- LCS, CMS, TF, FD, CLV
+- LCS, CMS, TF, I, CLV
+- LCS, CE, CLV
+- LCS, CE, CMS, CLV
+- LCS, CE, CMS, TF, CLV
+- LCS, CE, CMS, TF, FD, CLV
+- LCS, CE, CMS, TF, I, CLV
+- LCS, UP, CLV
+- LCS, LTE, CLV
+
 ## Project Organization
 
 - `/code` Scripts with prefixes (e.g., `01_import-data.py`,
