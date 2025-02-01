@@ -19,7 +19,7 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 This is my Causal Inference DAG:
 
-![DAG](figures/Updated_Loyalty_CLV_DAG.png)
+![DAG](figures/DAG_CLV.jpg)
 
 ## Project Organization
 
