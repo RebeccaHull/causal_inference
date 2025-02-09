@@ -58,6 +58,11 @@ Based on the DAG, here are all possible paths (23 paths) from LCS
 - LCS, UP, CLV
 - LCS, LTE, CLV
 
+Direct pipes, Can estimate total causal effect through them
+
+- LCS, UP, CLV
+- LCS, LTE, CLV
+
 Here are the backdoors & what to do about them:
 
 - LCS, I, CLV – Fork, Condition on I
@@ -85,10 +90,8 @@ Here are the backdoors & what to do about them:
   CMS or TF (all are needed in the end I believe) (?)
 - LCS, CE, CMS, TF, I, CLV – Pipe, Fork, Collider, Fork, Condition on CE
   or CMS or TF or I (all are needed in the end I believe) (?)
-- LCS, UP, CLV – Pipe, Condition on UP
-- LCS, LTE, CLV – Pipe, Condition on LTE
 
-Adjustment Set: I, TF, CMS, CE, UP, and LTE.
+Adjustment Set: I, TF, CMS, and CE.
 
 ## Project Organization
 

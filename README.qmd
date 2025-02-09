@@ -48,6 +48,7 @@ Based on the DAG, here are all possible paths (23 paths) from LCS (Loyalty Card 
 * LCS, LTE, CLV
 
 Direct pipes, Can estimate total causal effect through them
+
 * LCS, UP, CLV
 * LCS, LTE, CLV
 
