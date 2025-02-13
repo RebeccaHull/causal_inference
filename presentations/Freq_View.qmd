@@ -1,0 +1,91 @@
+---
+title: "Frequentist Statistics"
+format: revealjs
+license: "CC BY-SA 4.0"
+---
+
+## Frequentist
+
+Also known as orthodox or classical statistics (even though Bayesian came first).
+
+It is this notion of variation across repeated trials that forms the basis for modeling uncertainty
+used by the frequentist approach. By contrast, the Bayesian approach views probability in terms
+of information rather than repeated trials.
+
+## Uncertainty
+
+Uncertainty is represented by the sampling distribution of an estimator, rather than a posterior distribution of a random
+variable.
+
+## 
+The key idea in frequentist statistics is to view the data D as a random variable, and the parameters
+from which the data are drawn, θ*, as a fixed but unknown constant. Thus ˆθ = ˆΘ(D) is a random
+variable, and its distribution is known as the sampling distribution of the estimator.
+
+## Maximum Likelihood Estimation (MLE)
+
+- Asymptotic Normality: MLE estimators are approximately normal for large n.
+
+- Consistency: As the sample size increases, MLE converges to the true parameter.
+
+- Fisher information matrix (FIM) is defined to be
+the covariance of the gradient of the log likelihood (also called the score function).
+
+- Standard Error is the SD of a sampling distribution.
+
+## Bootstrap
+
+- Bootstrap approximation estimates the sampling distribution of an estimator by repeatedly resampling with replacement from the observed data and computing the estimator on each resample.
+
+- Bootstrap is called a "poor man's" posterior because its resampled estimates can resemble posterior samples when using MLE with a weak prior. However, it can be slower than posterior sampling since it requires refitting the model many times.
+
+- See next slide
+
+
+## 
+
+![](bootstrapPics.png){width=70%}
+
+## CI
+
+- A 95% confidence interval does not mean there's a 95% chance the true value is inside it—that’s what a Bayesian credible interval does. Instead, it means that if we repeated the experiment many times, 95% of the confidence intervals we create would contain the true value.
+
+- How are frequentist & bayesian CI's different?
+
+## Wald Interval
+- The Wald confidence interval for a Bernoulli parameter can fail, especially with small samples or extreme values. For instance, with one trial and an outcome of 0, both the MLE and confidence interval are (0,0), which is unrealistic. Even with larger samples, it can still perform poorly, unlike Bayesian credible intervals with a Jeffreys prior.
+
+- What is a Wald CI & when do we use it?
+
+## Bias-variance Tradeoff
+
+- The bias of an estimator is the difference between its expected value and the true parameter. An estimator is **unbiased** if this difference is zero. For example, the MLE for a Gaussian mean is unbiased, but the MLE for variance underestimates the true variance. To correct this, we use the **unbiased variance estimator**, which multiplies the MLE by \( N / (N - 1) \).
+
+
+##  
+
+
+- An estimator should not only be **unbiased** but also have **low variance**, meaning it should not fluctuate too much with different data samples. The variance of an estimator measures this fluctuation. The Cramér-Rao lower bound sets a theoretical minimum variance for any unbiased estimator, and the MLE reaches this bound asymptotically, making it the most efficient estimator for large samples.
+
+- MLE is said to be **asymptotically optimal**.
+
+- Why do we want low variance & unbiased estimators?
+
+##
+
+MSE = variance + bias^2
+
+This is called the bias-variance tradeoff. What it means is that it might be
+wise to use a biased estimator, so long as it reduces our variance by more than the square of the bias,
+assuming our goal is to **minimize squared error.**
+
+## MAP
+
+- The MAP (Maximum A Posteriori) estimate is an estimator that maximizes the posterior distribution of a parameter given the data. It's a combination of the likelihood of the data and a prior belief about the parameter.
+- Picture on next slide
+
+## 
+![](162.png){width=70%}
+
+## How do variance & bias influence each other?
+![](targets.png){width=70%}
