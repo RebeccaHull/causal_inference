@@ -68,3 +68,25 @@ Next slide has code & results
 ![](Hist_Salary.png){width=100%}
 
 ## Milestone 7: Estimate Causal Effects
+
+What my code does:
+
+- Defines a Bayesian regression model where CLV is predicted using the generated features.
+
+- Uses normal priors for the intercept and regression coefficients.
+
+- Uses a half-normal prior for the noise (sigma).
+
+- Estimates the posterior distribution of model parameters using MCMC sampling.
+
+- Summarizes the posterior distributions of parameters and plots the marginal posterior distributions.
+
+## 
+![](results_from_trial.png){width=100%}
+
+## 
+Causality:
+
+This code does not estimate causal effects directly. This is a Bayesian regression model, but it only captures associations, not causal effects.
+
+How do I estimate causal effect? I think I'm confused on milestone 7.
