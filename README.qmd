@@ -13,7 +13,7 @@ I want to study if having a higher loyalty card status for an airline causes an 
 
 The outcome would be positive and continuous values because it's how much revenue is expected to be made under the CLV. Other predictor variables that could influence CLV is salary, education level, marital status, total flights, and enrollment year/month. Other variables that could influence our outcome could be country of residence, gender, distance traveled, points redeemed, and dollar cost of points redeemed.
 
-My story is that I believe that the higher your status on your loyalty card, the more revenue you will make for the airline.
+My story is that I believe that having a loyalty card increases the revenue you will make for the airline.
 
 https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-impact-on-flights/data
 
