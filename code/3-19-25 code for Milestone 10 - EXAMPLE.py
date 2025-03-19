@@ -84,4 +84,4 @@ with pm.Model() as model:
     # likelihood
     pm.Normal("obs", mu, sigma, observed=df["y"].values, dims="obs_idx")
 
-
+graph = pm.model_to_graphviz(model)
