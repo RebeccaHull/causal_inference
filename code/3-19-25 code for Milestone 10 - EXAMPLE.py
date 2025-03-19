@@ -85,3 +85,9 @@ with pm.Model() as model:
     pm.Normal("obs", mu, sigma, observed=df["y"].values, dims="obs_idx")
 
 graph = pm.model_to_graphviz(model)
+
+
+with model:
+    idata = pm.sample()
+
+az.plot_trace(idata, var_names="~mu");
