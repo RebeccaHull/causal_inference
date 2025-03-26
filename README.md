@@ -22,8 +22,8 @@ status, total flights, and enrollment year/month. Other variables that
 could influence our outcome could be country of residence, gender,
 distance traveled, points redeemed, and dollar cost of points redeemed.
 
-My story is that I believe that the higher your status on your loyalty
-card, the more revenue you will make for the airline.
+My story is that I believe that having a loyalty card increases the
+revenue you will make for the airline.
 
 https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-impact-on-flights/data
 
@@ -92,6 +92,40 @@ Here are the backdoors & what to do about them:
   or CMS or TF or I (all are needed in the end I believe) (?)
 
 Adjustment Set: I, TF, CMS, and CE.
+
+## Survey Results
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 ## Project Organization
 

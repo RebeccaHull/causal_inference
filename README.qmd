@@ -77,6 +77,40 @@ Here are the backdoors & what to do about them:
 
 Adjustment Set: I, TF, CMS, and CE.
 
+## Survey Results
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+
+![DAG](figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+
+![DAG](figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+
 ## Project Organization
 
 - `/code` Scripts with prefixes (e.g., `01_import-data.py`, `02_clean-data.py`) and functions in `/code/src`.
