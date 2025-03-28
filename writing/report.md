@@ -36,8 +36,9 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 ## Milestone 3: DAG
 
-<img src="../figures/salary_histogram.png" data-fig-align="center"
-alt="Initial_DAG" />
+![Initial Old DAG](../figures/Old_DAG.png)
+
+![Second Iteration of Initial Old DAG](../figures/Old_DAG_Updated.png)
 
 ## Milestone 4: Identification Strategy
 
