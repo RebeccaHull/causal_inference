@@ -1,4 +1,4 @@
-# My Project Report
+# Airline Loyalty Causal Inference
 
 
 ## Milestone 1: Project Idea
@@ -156,8 +156,8 @@ sim_data = (
 sim_data
 
 # Visualize the data
-sns.scatterplot(data=sim_data, x='x', y='CLV')
-sns.lmplot(data=sim_data, x='x', y='CLV', height=6, aspect=1, scatter_kws={'s': 10}, line_kws={'color': 'red'})
+# sns.scatterplot(data=sim_data, x='x', y='CLV')
+# sns.lmplot(data=sim_data, x='x', y='CLV', height=6, aspect=1, scatter_kws={'s': 10}, line_kws={'color': 'red'})
 
 # Specify the X matrix and CLV vector.
 X = sim_data[['x', 'flight_dist', 'travel_freq', 'cust_marketing_strat', 'cust_engagement', 'loyalty_card_status']]
@@ -189,29 +189,152 @@ print(f'Slope for loyalty_card_status: {model.coef_[5]}')
     Slope for cust_engagement: 2.7190101859602787
     Slope for loyalty_card_status: 1000.1457705767122
 
-![](report_files/figure-commonmark/cell-2-output-2.png)
+In this code, a simulated dataset is created using various predictors
+(independent variables) to estimate the Customer Lifetime Value (CLV),
+which is the outcome (dependent variable). The code first defines the
+parameter values for each predictor, including factors like income,
+flight distance, travel frequency, customer marketing strategy, customer
+engagement, and loyalty card status. It then generates random values for
+these predictors and combines them in a linear equation to simulate CLV.
+This equation also includes a small amount of random noise to make the
+data more realistic.
 
-![](report_files/figure-commonmark/cell-2-output-3.png)
-
-Lorem ipsum odor amet, consectetuer adipiscing elit. Sagittis interdum
-fringilla sagittis platea eget dictum sodales non. Nec arcu porta felis
-eros sem accumsan? Sit quis ridiculus, ligula dictum ex luctus.
+After generating the data, a linear regression model is applied to it
+using the `LinearRegression` function from the `sklearn` library. The
+model is trained using the predictors (`X`) and the simulated CLV
+values. Once the model is trained, the code prints the estimated
+coefficients for each predictor, which represent how each variable
+impacts the CLV. By examining these coefficients, we can understand the
+relationship between the predictors and CLV.
 
 ## Milestone 6: Exploratory Data Analysis
 
-Aliquam sociosqu habitant conubia porta sagittis sociosqu aenean? Nunc
-eget accumsan nunc lacus, urna lacus? Est quisque quis iaculis phasellus
-nisl. Purus nisi cursus convallis, tristique mauris sagittis nibh.
+Loyalty Card Status is whether or not you have an airline loyalty card,
+whether that’s Star, Nova, or Aurora. Here is a break down of the data
+by type of loyalty card. We can see that most people have the highest
+loyalty card, Star, followed by Nova and then by Aurora.
 
 ``` python
-(so.Plot(sim_data, x = 'x', y = 'y')
-  .add(so.Dot(pointsize = 10, alpha = 0.5))
-)
+# Create a bar plot for loyalty_card_status
+ax = sns.countplot(x='Loyalty Card', data=data)
+
+# Set labels and title
+plt.xlabel('Loyalty Card Status')
+plt.ylabel('Count')
+plt.title('Distribution of Loyalty Card Status')
+
+# Add the count labels on top of the bars without decimals
+for p in ax.patches:
+    ax.annotate(f'{int(p.get_height())}', 
+                (p.get_x() + p.get_width() / 2., p.get_height()), 
+                ha='center', va='center', 
+                fontsize=12, color='black', 
+                xytext=(0, 5), textcoords='offset points')
+
+# Save the figure
+plt.savefig('../figures/loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
-<img src="../figures/sim-data-01.png" data-fig-align="center" />
+![Loyalty Card Status Bar
+Chart](../figures/loyalty_card_distribution_bar_chart.png)
 
-Mauris volutpat iaculis enim nam taciti est ipsum dui.
+Most people have an income between roughly \$80,000 and \$125,000. This
+is expected. There are of course some who have higher salaries, hence
+the right skew.
+
+``` python
+# Clean the data by removing null, empty, and negative salary values
+data_clean = data[data['Salary'].notnull() & (data['Salary'] != '')]
+data_clean = data_clean[data_clean['Salary'] >= 0]
+
+# Plot the histogram
+plt.hist(data_clean['Salary'], bins=8, color='skyblue', edgecolor='black')
+plt.title('Histogram of Salary')
+plt.xlabel('Salary')
+plt.ylabel('Frequency')
+
+# Save the figure
+plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
+```
+
+![Salary Histogram](../figures/salary_histogram.png)
+
+Most people have an income between roughly \$80,000 and \$125,000. This
+is expected. There are of course some who have higher salaries, hence
+the right skew.
+
+``` python
+# Clean the data by removing null, empty, and negative salary values
+data_clean = data[data['Salary'].notnull() & (data['Salary'] != '')]
+data_clean = data_clean[data_clean['Salary'] >= 0]
+
+# Plot the histogram
+plt.hist(data_clean['Salary'], bins=8, color='skyblue', edgecolor='black')
+plt.title('Histogram of Salary')
+plt.xlabel('Salary')
+plt.ylabel('Frequency')
+
+# Save the figure
+plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
+```
+
+![Salary Histogram](../figures/salary_histogram.png)
+
+Travel Frequency is how frequently a person travels. I do not have this
+variable in my dataset.
+
+Customer Marketing Strategy is how well the airline markets their
+products. I don’t have a direct variable for this in my dataset but I do
+know which enrollment types people did when they got a loyalty card.
+
+``` python
+# Create a bar plot for Enrollment Type
+ax = sns.countplot(x='Enrollment Type', data=data)
+
+# Set labels and title
+plt.xlabel('Enrollment Type')
+plt.ylabel('Count')
+plt.title('Distribution of Enrollment Type')
+
+# Add the count labels on top of the bars without decimals
+for p in ax.patches:
+    ax.annotate(f'{int(p.get_height())}', 
+                (p.get_x() + p.get_width() / 2., p.get_height()), 
+                ha='center', va='center', 
+                fontsize=12, color='black', 
+                xytext=(0, 5), textcoords='offset points')
+
+# Save the figure
+plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='tight')
+```
+
+![Salary Histogram](../figures/enrollment_type_bar_chart.png)
+
+Customer Engagement is how engaged a person is in the airline. I do not
+have this variable in my dataset.
+
+CLV is Customer Lifetime Value, or how much revenue a single person
+generates the airline company. It seems that most people earn the
+airline between roughly \$2,000 and \$15,000.
+
+``` python
+# Clean the data and remove negative values
+data_clean = data[data['CLV'].notnull() & (data['CLV'] != '')]
+data_clean = data_clean[data_clean['CLV'] >= 0]  
+
+# Plot the histogram
+plt.hist(data_clean['CLV'], bins=6, edgecolor='black')
+
+# Add titles and labels
+plt.title('Distribution of Customer Lifetime Value (CLV)')
+plt.xlabel('Customer Lifetime Value (CLV)')
+plt.ylabel('Count')
+
+# Save the figure
+plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
+```
+
+![Salary Histogram](../figures/clv_histogram.png)
 
 ## Milestone 7: Estimate Causal Effects
 
