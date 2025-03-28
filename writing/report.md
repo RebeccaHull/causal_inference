@@ -47,59 +47,151 @@ most of these columns in my dataset.
 
 ## Milestone 4: Identification Strategy
 
-Here’s my adjustment set following the backdoor criteria:
+Based on the DAG, here are all possible paths (23 paths) from LCS
+(Loyalty Card Status) to CLV (Customer Lifetime Value):
 
-- Lorem ipsum odor amet, consectetuer adipiscing elit.
-- Euismod a inceptos torquent laoreet dapibus quis quam laoreet.
-- Magnis lacinia ante aliquam posuere parturient lobortis.
+- LCS, CLV
+- LCS, I, CLV
+- LCS, I, TF, CLV
+- LCS, I, TF, FD, CLV
+- LCS, I, TF, CMS, CLV
+- LCS, I, TF, CMS, CE, CLV
+- LCS, TF, CLV
+- LCS, TF, I, CLV
+- LCS, TF, FD, CLV
+- LSC, TF, CMS, CLV
+- LCS, TF, CMS, CE, CLV
+- LCS, CMS, CLV
+- LCS, CMS, CE, CLV
+- LCS, CMS, TF, CLV
+- LCS, CMS, TF, FD, CLV
+- LCS, CMS, TF, I, CLV
+- LCS, CE, CLV
+- LCS, CE, CMS, CLV
+- LCS, CE, CMS, TF, CLV
+- LCS, CE, CMS, TF, FD, CLV
+- LCS, CE, CMS, TF, I, CLV
+- LCS, UP, CLV
+- LCS, LTE, CLV
+
+Direct pipes, Can estimate total causal effect through them
+
+- LCS, UP, CLV
+- LCS, LTE, CLV
+
+Here are the backdoors & what to do about them:
+
+- LCS, I, CLV – Fork, Condition on I
+- LCS, I, TF, CLV – Fork, Pipe, Condition on TF
+- LCS, I, TF, FD, CLV – Fork, Pipe, Pipe, Condition on FD (?)
+- LCS, I, TF, CMS, CLV –Fork, Collider, Fork, Condition on CMS
+- LCS, I, TF, CMS, CE, CLV – Fork, Collider, Fork, Pipe, Condition on CE
+  (??)
+- LCS, TF, CLV – Fork, Condition on TF
+- LCS, TF, I, CLV – Fork, Pipe, Condition on I
+- LCS, TF, FD, CLV – Fork, Pipe, Condition on FD (?)
+- LSC, TF, CMS, CLV – Pipe, Fork, Condition on CMS
+- LCS, TF, CMS, CE, CLV – Pipe, Fork, Pipe, Condition on CE
+- LCS, CMS, CLV – Fork, Condition on CMS
+- LCS, CMS, CE, CLV – Fork, Pipe, Condition on CE (?)
+- LCS, CMS, TF, CLV – Fork, Pipe, Condition on CMS (?)
+- LCS, CMS, TF, FD, CLV – Fork, Pipe, Pipe, Condition on CMS & TF (??)
+- LCS, CMS, TF, I, CLV – Fork, Collider, Fork, Condition on CMS, TF, & I
+  (all are needed in the end I believe) (?)
+- LCS, CE, CLV – Fork, Condition on CE
+- LCS, CE, CMS, CLV – Pipe, Fork, Condition on CE or CMS
+- LCS, CE, CMS, TF, CLV – Pipe, Fork, Pipe, Condition on CE or CMS or TF
+  (all are needed in the end I believe) (?)
+- LCS, CE, CMS, TF, FD, CLV – Pipe, Fork, Pipe, Pipe, Condition on CE or
+  CMS or TF (all are needed in the end I believe) (?)
+- LCS, CE, CMS, TF, I, CLV – Pipe, Fork, Collider, Fork, Condition on CE
+  or CMS or TF or I (all are needed in the end I believe) (?)
+
+Adjustment Set: I, TF, CMS, and CE.
 
 ## Milestone 5: Simulate Data and Recover Parameters
 
 ``` python
 import numpy as np
 import polars as pl
-import seaborn.objects as so
+import seaborn as sns
 from sklearn.linear_model import LinearRegression
 
 np.random.seed(42)
 
 # Set the parameter values.
-beta0 = 3
-beta1 = 7
+beta0 = 1000
+income = 70000
+flight_dist = 3500
+travel_freq = 5
+cust_marketing_strat = 1
+cust_engagement = 3
+loyalty_card_status = 1000
 n = 100
 
 sim_data = (
     # Simulate predictors using appropriate np.random distributions.
     pl.DataFrame({
-        'x': np.random.uniform(0, 7, size = n)
+        'x': np.random.uniform(0, 7, size=n),
+        'flight_dist': np.random.uniform(0, 10000, size=n),
+        'travel_freq': np.random.uniform(1, 10, size=n),
+        'cust_marketing_strat': np.random.uniform(0, 5, size=n),
+        'cust_engagement': np.random.uniform(1, 10, size=n),
+        'loyalty_card_status': np.random.choice([0, 1], size=n)  # New binary predictor
     })
-    # Use predictors and parameter values to simulate the outome.
-    .with_columns([
-        (beta0 + beta1 * pl.col('x') + np.random.normal(0, 3, size = n)).alias('y')
+    # Use predictors and parameter values to simulate the outcome.
+    .with_columns([ 
+        (
+            beta0 + income * pl.col('x') + flight_dist * pl.col('flight_dist') +
+            travel_freq * pl.col('travel_freq') +
+            cust_marketing_strat * pl.col('cust_marketing_strat') +
+            cust_engagement * pl.col('cust_engagement') +
+            loyalty_card_status * pl.col('loyalty_card_status') +  # Adding loyalty_card_status with a coefficient (e.g., 1000)
+            np.random.normal(0, 3, size=n)
+        ).alias('CLV')  # Renaming y to CLV
     ])
 )
 
+# Display the data
 sim_data
 
-# Specify the X matrix and y vector.
-X = sim_data[['x']]
-y = sim_data['y']
+# Visualize the data
+sns.scatterplot(data=sim_data, x='x', y='CLV')
+sns.lmplot(data=sim_data, x='x', y='CLV', height=6, aspect=1, scatter_kws={'s': 10}, line_kws={'color': 'red'})
+
+# Specify the X matrix and CLV vector.
+X = sim_data[['x', 'flight_dist', 'travel_freq', 'cust_marketing_strat', 'cust_engagement', 'loyalty_card_status']]
+CLV = sim_data['CLV']
 
 # Create a linear regression model.
 model = LinearRegression(fit_intercept=True)
-
 # Train the model.
-model.fit(X, y)
+model.fit(X, CLV)
 
 # Print the coefficients
 print(f'Intercept: {model.intercept_}')
-print(f'Slope: {model.coef_[0]}')
+print(f'Slope for x: {model.coef_[0]}')
+print(f'Slope for flight_dist: {model.coef_[1]}')
+print(f'Slope for travel_freq: {model.coef_[2]}')
+print(f'Slope for cust_marketing_strat: {model.coef_[3]}')
+print(f'Slope for cust_engagement: {model.coef_[4]}')
+print(f'Slope for loyalty_card_status: {model.coef_[5]}')
 
 # Have you recovered the parameters?
+# Yes
 ```
 
-    Intercept: 3.645288472640246
-    Slope: 6.802954331232985
+    Intercept: 1001.5413256846368
+    Slope for x: 69999.86275851386
+    Slope for flight_dist: 3499.9999835407984
+    Slope for travel_freq: 5.112035246336143
+    Slope for cust_marketing_strat: 0.8774017286699657
+    Slope for cust_engagement: 2.7190101859602787
+    Slope for loyalty_card_status: 1000.1457705767122
+
+![](report_files/figure-commonmark/cell-2-output-2.png)
+
+![](report_files/figure-commonmark/cell-2-output-3.png)
 
 Lorem ipsum odor amet, consectetuer adipiscing elit. Sagittis interdum
 fringilla sagittis platea eget dictum sodales non. Nec arcu porta felis
