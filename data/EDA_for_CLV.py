@@ -1,3 +1,5 @@
+# EDA for CLV Project
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -9,6 +11,8 @@ print(data.columns)
 
 # If there are extra spaces in the column names, you can strip them
 data.columns = data.columns.str.strip()
+
+###############################################################
 
 # Create a bar plot for loyalty_card_status
 ax = sns.countplot(x='Loyalty Card', data=data)
@@ -26,26 +30,25 @@ for p in ax.patches:
                 fontsize=12, color='black', 
                 xytext=(0, 5), textcoords='offset points')
 
-# Display the plot
-plt.show()
+# Save the figure
+plt.savefig('../figures/loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
 
+###############################################################
 
-
-###########################################
-
-# Clean the data by removing null or empty values
+# Clean the data by removing null, empty, and negative salary values
 data_clean = data[data['Salary'].notnull() & (data['Salary'] != '')]
+data_clean = data_clean[data_clean['Salary'] >= 0]
 
 # Plot the histogram
-plt.hist(data_clean['Salary'], bins=10, color='skyblue', edgecolor='black')
+plt.hist(data_clean['Salary'], bins=8, color='skyblue', edgecolor='black')
 plt.title('Histogram of Salary')
 plt.xlabel('Salary')
 plt.ylabel('Frequency')
-plt.show()
 
+# Save the figure
+plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
 
-
-###############################
+###############################################################
 
 # Create a bar plot for Enrollment Type
 ax = sns.countplot(x='Enrollment Type', data=data)
@@ -63,27 +66,22 @@ for p in ax.patches:
                 fontsize=12, color='black', 
                 xytext=(0, 5), textcoords='offset points')
 
-# Display the plot
-plt.show()
+# Save the figure
+plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='tight')
 
+###############################################################
 
-
-#####################################
-
-# Clean the data by removing null or empty values in the 'CLV' column
+# Clean the data and remove negative values
 data_clean = data[data['CLV'].notnull() & (data['CLV'] != '')]
+data_clean = data_clean[data_clean['CLV'] >= 0]  
 
-# Create 10 equal-width bins for CLV
-bins = 6
-data_clean['CLV_Binned'] = pd.cut(data_clean['CLV'], bins=bins)
+# Plot the histogram
+plt.hist(data_clean['CLV'], bins=6, edgecolor='black')
 
-# Create a bar plot for binned CLV values
-ax = sns.countplot(x='CLV_Binned', data=data_clean)
-
-# Set labels and title
-plt.xlabel('Customer Lifetime Value (CLV) Range')
-plt.ylabel('Count')
+# Add titles and labels
 plt.title('Distribution of Customer Lifetime Value (CLV)')
+plt.xlabel('Customer Lifetime Value (CLV)')
+plt.ylabel('Count')
 
-# Display the plot without number labels
-plt.show()
+# Save the figure
+plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
