@@ -288,18 +288,6 @@ plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 ![Salary Histogram](../figures/clv_histogram.png)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ## Milestone 7: Estimate Causal Effects
 
 ```{python}
@@ -358,3 +346,23 @@ See my intermediate presentation [slides](https://github.com/marcdotson/causal-i
 - Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 - Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 - Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
+## Milestone 9: Run Conjoint Experiment
+
+
+## Milestone 10: Implement Diff-in-Diff Strategy
+
+
+## Milestone 11: Clean Up Project Report
+
+I created and cleaned up my project report in the writing folder.
+
+The CLV histogram now have bins that touch and a more appropriate number of bins.
+
+The Salary histogram no longer has a bin below zero (since you can't have a negative salary).
+
+I updated my DAG along the way.
+
+![DAG](../figures/DAG_CLV.jpg)
