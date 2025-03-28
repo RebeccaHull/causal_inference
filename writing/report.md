@@ -36,7 +36,12 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 ## Milestone 3: DAG
 
+This is the first DAG I created.
+
 ![Initial Old DAG](../figures/Old_DAG.png)
+
+This is the second DAG I created. I add more variables because I have
+most of these columns in my dataset.
 
 ![Second Iteration of Initial Old DAG](../figures/Old_DAG_Updated.png)
 
