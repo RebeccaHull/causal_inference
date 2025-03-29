@@ -340,69 +340,121 @@ plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 
 ``` python
 # eval: false
-import bambi as bmb
+import numpy as np
+import polars as pl
+import pymc as pm
 import arviz as az
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-# Import foxes data.
-foxes = pl.read_csv('../data/foxes.csv')
+np.random.seed(42)
 
-# Use Bambi to estimate the direct causal effect of avgfood on weight.
-bambi_model_01 = bmb.Model('weight ~ avgfood + groupsize', foxes.to_pandas())
-bambi_model_01
+# Set the parameter values.
+beta0 = 1000
+income = 70000
+flight_dist = 3500
+travel_freq = 5
+cust_marketing_strat = 1
+cust_engagement = 3
+loyalty_card_status = 1000
+n = 100
+
+# Simulate Data
+sim_data = (
+    pl.DataFrame({
+        'x': np.random.uniform(0, 7, size=n),
+        'flight_dist': np.random.uniform(0, 10000, size=n),
+        'travel_freq': np.random.uniform(1, 10, size=n),
+        'cust_marketing_strat': np.random.uniform(0, 5, size=n),
+        'cust_engagement': np.random.uniform(1, 10, size=n),
+        'loyalty_card_status': np.random.choice([0, 1], size=n)
+    })
+    .with_columns([ 
+        (
+            beta0 + income * pl.col('x') + flight_dist * pl.col('flight_dist') +
+            travel_freq * pl.col('travel_freq') +
+            cust_marketing_strat * pl.col('cust_marketing_strat') +
+            cust_engagement * pl.col('cust_engagement') +
+            loyalty_card_status * pl.col('loyalty_card_status') +
+            np.random.normal(0, 3, size=n)
+        ).alias('CLV')
+    ])
+)
+
+# Separate predictors and outcome
+X = sim_data[['x', 'flight_dist', 'travel_freq', 'cust_marketing_strat', 'cust_engagement', 'loyalty_card_status']].to_numpy()
+CLV = sim_data['CLV'].to_numpy()
+
+# Bayesian Linear Regression Model
+with pm.Model() as clv_model:
+    # Priors
+    alpha = pm.Normal('alpha', mu=0, sigma=1000)
+    beta = pm.Normal('beta', mu=0, sigma=50000, shape=X.shape[1])  # One coefficient per feature
+    sigma = pm.HalfNormal('sigma', sigma=100)
+
+    # Likelihood
+    mu = alpha + X @ beta  # Matrix multiplication of predictors and coefficients
+    y_obs = pm.Normal('y_obs', mu=mu, sigma=sigma, observed=CLV)
+
+    # Posterior Sampling
+    trace = pm.sample(1000, return_inferencedata=True)
+
+# Summary of results
+summary = az.summary(trace, round_to=2)
+print(summary)
+
+# Visualizing the marginal posteriors
+az.plot_trace(trace, combined=True)
+
+
+# Save the figure as a file
+plt.savefig("trace_plot.png", dpi=300, bbox_inches="tight")
+
+# Show the plot (optional)
+plt.show()
 ```
 
-           Formula: weight ~ avgfood + groupsize
-            Family: gaussian
-              Link: mu = identity
-      Observations: 116
-            Priors: 
-        target = mu
-            Common-level effects
-                Intercept ~ Normal(mu: -0.0, sigma: 2.4892)
-                avgfood ~ Normal(mu: 0.0, sigma: 2.5)
-                groupsize ~ Normal(mu: 0.0, sigma: 2.5)
-            
-            Auxiliary parameters
-                sigma ~ HalfStudentT(nu: 4.0, sigma: 0.9957)
+    Initializing NUTS using jitter+adapt_diag...
+    Multiprocess sampling (4 chains in 4 jobs)
+    NUTS: [alpha, beta, sigma]
 
-           Formula: weight ~ avgfood + groupsize
-            Family: gaussian
-              Link: mu = identity
-      Observations: 116
-            Priors: 
-        target = mu
-            Common-level effects
-                Intercept ~ Normal(mu: -0.0, sigma: 2.4892)
-                avgfood ~ Normal(mu: 0.0, sigma: 2.5)
-                groupsize ~ Normal(mu: 0.0, sigma: 2.5)
-            
-            Auxiliary parameters
-                sigma ~ HalfStudentT(nu: 4.0, sigma: 0.9957)
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">C:\Users\rhigb\anaconda3\envs\pymc_env\lib\site-packages\rich\live.py:231: UserWarning: install "ipywidgets" for 
+Jupyter support
+  warnings.warn('install "ipywidgets" for Jupyter support')
+</pre>
 
-``` python
-# Calls pm.sample().
-bambi_fit_01 = bambi_model_01.fit()
-az.plot_trace(bambi_fit_01, compact = False)
-```
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-<img src="../figures/multilevel-models_plot-01.png"
-data-fig-align="center" />
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 40 seconds.
 
-``` python
-# Visualize marginal posteriors.
-az.plot_forest(bambi_fit_01, var_names = ['avgfood', 'groupsize'], combined = True, hdi_prob = 0.95)
-```
+                 mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
+    alpha     1001.54  1.54    998.75   1004.45       0.03     0.02   2134.35   
+    beta[0]  69999.86  0.16  69999.59  70000.18       0.00     0.00   2967.55   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3741.18   
+    beta[2]      5.11  0.13      4.87      5.35       0.00     0.00   2683.50   
+    beta[3]      0.88  0.23      0.42      1.30       0.00     0.00   2661.24   
+    beta[4]      2.72  0.12      2.50      2.93       0.00     0.00   3131.58   
+    beta[5]   1000.17  0.66    998.88   1001.33       0.01     0.01   3663.39   
+    sigma        3.15  0.23      2.71      3.58       0.00     0.00   3740.10   
 
-<img src="../figures/multilevel-models_plot-02.png"
-data-fig-align="center" />
+             ess_tail  r_hat  
+    alpha     2464.34    1.0  
+    beta[0]   2715.87    1.0  
+    beta[1]   3031.50    1.0  
+    beta[2]   2531.54    1.0  
+    beta[3]   2503.19    1.0  
+    beta[4]   2671.49    1.0  
+    beta[5]   2770.49    1.0  
+    sigma     3013.41    1.0  
 
-Controlling for group size, average food has a positive impact on fox
-weight.
+![](report_files/figure-commonmark/cell-8-output-6.png)
+
+![trace plot](../figures/trace_plot.png)
 
 ## Milestone 8: Intermediate Presentation
 
-See my intermediate presentation
-[slides](https://github.com/marcdotson/causal-inference/blob/main/presentations/multivariate-models.html).
+See my intermediate presentation [Intermediate Presentation
+Slides](https://github.com/marcdotson/causal-inference/blob/main/presentations/multivariate-models.html).
 To summarize some feedback:
 
 - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -413,3 +465,53 @@ To summarize some feedback:
   dolore eu fugiat nulla pariatur.
 - Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
   officia deserunt mollit anim id est laborum.
+
+## Milestone 9: Run Conjoint Experiment
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+
+![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+
+![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+
+![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+
+![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+
+![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+
+![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+
+## Milestone 10: Implement Diff-in-Diff Strategy
+
+## Milestone 11: Clean Up Project Report
+
+I created and cleaned up my project report in the writing folder.
+
+The CLV histogram now have bins that touch and a more appropriate number
+of bins.
+
+The Salary histogram no longer has a bin below zero (since you can’t
+have a negative salary).
+
+I updated my DAG along the way.
+
+![DAG](../figures/DAG_CLV.jpg)
