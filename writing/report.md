@@ -409,9 +409,6 @@ az.plot_trace(trace, combined=True)
 
 # Save the figure as a file
 plt.savefig("trace_plot.png", dpi=300, bbox_inches="tight")
-
-# Show the plot (optional)
-plt.show()
 ```
 
     Initializing NUTS using jitter+adapt_diag...
@@ -428,24 +425,24 @@ Jupyter support
     Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 40 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.54  1.54    998.75   1004.45       0.03     0.02   2134.35   
-    beta[0]  69999.86  0.16  69999.59  70000.18       0.00     0.00   2967.55   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3741.18   
-    beta[2]      5.11  0.13      4.87      5.35       0.00     0.00   2683.50   
-    beta[3]      0.88  0.23      0.42      1.30       0.00     0.00   2661.24   
-    beta[4]      2.72  0.12      2.50      2.93       0.00     0.00   3131.58   
-    beta[5]   1000.17  0.66    998.88   1001.33       0.01     0.01   3663.39   
-    sigma        3.15  0.23      2.71      3.58       0.00     0.00   3740.10   
+    alpha     1001.52  1.55    998.92   1004.62       0.03     0.02   1968.57   
+    beta[0]  69999.87  0.16  69999.56  70000.16       0.00     0.00   2776.47   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3388.06   
+    beta[2]      5.11  0.12      4.87      5.33       0.00     0.00   2777.60   
+    beta[3]      0.88  0.23      0.45      1.32       0.00     0.00   3125.01   
+    beta[4]      2.72  0.12      2.50      2.93       0.00     0.00   2974.97   
+    beta[5]   1000.16  0.66    998.88   1001.35       0.01     0.01   4124.04   
+    sigma        3.15  0.23      2.70      3.57       0.00     0.00   3620.76   
 
              ess_tail  r_hat  
-    alpha     2464.34    1.0  
-    beta[0]   2715.87    1.0  
-    beta[1]   3031.50    1.0  
-    beta[2]   2531.54    1.0  
-    beta[3]   2503.19    1.0  
-    beta[4]   2671.49    1.0  
-    beta[5]   2770.49    1.0  
-    sigma     3013.41    1.0  
+    alpha     2336.00    1.0  
+    beta[0]   2699.22    1.0  
+    beta[1]   2958.23    1.0  
+    beta[2]   2596.97    1.0  
+    beta[3]   2769.42    1.0  
+    beta[4]   2552.51    1.0  
+    beta[5]   2817.21    1.0  
+    sigma     2876.28    1.0  
 
 ![](report_files/figure-commonmark/cell-8-output-6.png)
 
@@ -454,19 +451,21 @@ Jupyter support
 ## Milestone 8: Intermediate Presentation
 
 See my intermediate presentation [Intermediate Presentation
-Slides](https://github.com/marcdotson/causal-inference/blob/main/presentations/multivariate-models.html).
+Slides](https://github.com/RebeccaHull/causal_inference/blob/main/presentations/Intermediate_CI_Presentation_Hull.html).
 To summarize some feedback:
 
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  eiusmod tempor incididunt ut labore et dolore magna aliqua.
-- Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-  nisi ut aliquip ex ea commodo consequat.
-- Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-  dolore eu fugiat nulla pariatur.
-- Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-  officia deserunt mollit anim id est laborum.
+- I need to make sure my salary histogram does not have a bin nor data
+  that goes below 0.
+- I need to make sure that my CLV histogram has touching bars.
+  Additionally, set the number of bins to something that makes sense for
+  the data (so in my case, more bins).
 
 ## Milestone 9: Run Conjoint Experiment
+
+I ran a conjoint experiment through a survey using Discover Sawtooth
+Software. I was testing how desirable different package deals (with
+specified benefits) were for different loyalty cards. I got 33
+responses. Here are my results:
 
 ![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
 
@@ -502,16 +501,117 @@ To summarize some feedback:
 
 ## Milestone 10: Implement Diff-in-Diff Strategy
 
+``` python
+import arviz as az
+import numpy as np
+import pandas as pd
+import pymc as pm
+import seaborn as sns
+
+# Outcomes
+
+def outcome(t, control_intercept, treat_intercept_delta, trend, Δ, group, treated):
+    return control_intercept + (treat_intercept_delta * group) + (trend * t) + (Δ * treated * group)
+
+def is_treated(t, intervention_time, group):
+    return (t > intervention_time) * group
+
+# True parameters
+control_intercept = 5000  # CLV for non-members
+baseline_treat_intercept = 6000  # CLV for Aurora before upgrade
+trend = 3000  # General CLV increase over time
+Δ = 2000  # Treatment effect: additional CLV boost from upgrading to Star
+intervention_time = 0.5  # When the upgrade happens
+
+# Generating Synthetic Dataset
+df = pd.DataFrame(
+    {
+        "group": [0, 0, 1, 1] * 10,  # 0 = No Loyalty Card, 1 = Aurora
+        "t": [0.0, 1.0, 0.0, 1.0] * 10,  # Time periods (Pre/Post)
+        "unit": np.concatenate([[i] * 2 for i in range(20)]),
+    }
+)
+
+df["treated"] = is_treated(df["t"], intervention_time, df["group"])
+
+df["y"] = outcome(
+    df["t"],
+    control_intercept,
+    baseline_treat_intercept - control_intercept,  # Initial difference in CLV
+    trend,
+    Δ,
+    df["group"],
+    df["treated"],
+)
+df["y"] += np.random.normal(0, 500, df.shape[0])  # Add noise
+
+# Frequentist Diff-in-Diff Calculation
+diff_control = (
+    df.loc[(df["t"] == 1) & (df["group"] == 0)]["y"].mean()
+    - df.loc[(df["t"] == 0) & (df["group"] == 0)]["y"].mean()
+)
+print(f"Pre/post difference in control group = {diff_control:.2f}")
+
+diff_treat = (
+    df.loc[(df["t"] == 1) & (df["group"] == 1)]["y"].mean()
+    - df.loc[(df["t"] == 0) & (df["group"] == 1)]["y"].mean()
+)
+
+print(f"Pre/post difference in treatment group = {diff_treat:.2f}")
+
+diff_in_diff = diff_treat - diff_control
+print(f"Difference in differences = {diff_in_diff:.2f}")
+
+# Bayesian Approach
+with pm.Model() as model:
+    # Data
+    t = pm.MutableData("t", df["t"].values, dims="obs_idx")
+    treated = pm.MutableData("treated", df["treated"].values, dims="obs_idx")
+    group = pm.MutableData("group", df["group"].values, dims="obs_idx")
+    # Priors
+    _control_intercept = pm.Normal("control_intercept", 5000, 1000)
+    _treat_intercept_delta = pm.Normal("treat_intercept_delta", 1000, 1000)
+    _trend = pm.Normal("trend", 3000, 1000)
+    _Δ = pm.Normal("Δ", 2000, 1000)
+    sigma = pm.HalfNormal("sigma", 500)
+    # Expectation
+    mu = pm.Deterministic(
+        "mu",
+        outcome(t, _control_intercept, _treat_intercept_delta, _trend, _Δ, group, treated),
+        dims="obs_idx",
+    )
+    # Likelihood
+    pm.Normal("obs", mu, sigma, observed=df["y"].values, dims="obs_idx")
+
+with model:
+    idata = pm.sample()
+
+az.plot_trace(idata, var_names="~mu");
+
+
+
+# Results
+# Pre/post difference in control group = 3006.32
+# Pre/post difference in treatment group = 4935.59
+# Difference in differences = 1929.27
+```
+
+Those who upgraded to a higher loyalty status (aka got the treatment)
+had an increase of \$1929.27 in CLV after they upgraded from an Aurora
+card to a higher status loyalty card.
+
 ## Milestone 11: Clean Up Project Report
 
 I created and cleaned up my project report in the writing folder.
 
-The CLV histogram now have bins that touch and a more appropriate number
-of bins.
+A few changes I made:
 
-The Salary histogram no longer has a bin below zero (since you can’t
-have a negative salary).
+- The CLV histogram now have bins that touch and a more appropriate
+  number of bins.
 
-I updated my DAG along the way.
+- The Salary histogram no longer has a bin below zero (since you can’t
+  have a negative salary).
+
+- I updated my DAG along the way.
 
 ![DAG](../figures/DAG_CLV.jpg)
