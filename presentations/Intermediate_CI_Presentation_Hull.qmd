@@ -17,13 +17,9 @@ I believe that having a loyalty card increases CLV.
 
 - The outcome would be positive and continuous values because it’s how much revenue is expected to be made under the CLV. Other predictor variables that could influence CLV is salary, education level, marital status, total flights, and enrollment year/month. Other variables that could influence our outcome could be country of residence, gender, distance traveled, points redeemed, and dollar cost of points redeemed.
 
-##
-
-![](datascreenshot.png){width=90%}
-
 ## Milestone 3: DAG
 
-![](DAG_CLV.jpg){width=100%}
+![](../figures/DAG_CLV.jpg){width=100%}
 
 ## Milestone 4: Identification Strategy
 
@@ -49,23 +45,23 @@ Next slide has code & results
 
 ## Parameters I set matched what I got back
 
-![](parameters.png){width=100%}
+![](../figures/parameters.png){width=100%}
 
 ## Milestone 6: EDA
 
-![](Bar_CLV.png){width=100%}
+![](../figures/clv_histogram.png){width=100%}
 
 ##
 
-![](Bar_Enr_Type.png){width=100%}
+![](../figures/enrollment_type_bar_chart.png){width=100%}
 
 ##
 
-![](Bar_Graph_of_Loyalty_Types.png){width=100%}
+![](../figures/loyalty_card_distribution_bar_chart.png){width=100%}
 
 ##
 
-![](Hist_Salary.png){width=100%}
+![](../figures/salary_histogram.png){width=100%}
 
 ## Milestone 7: Estimate Causal Effects
 
@@ -82,7 +78,7 @@ What my code does:
 - Summarizes the posterior distributions of parameters and plots the marginal posterior distributions.
 
 ## 
-![](results_from_trial.png){width=100%}
+![](../figures/results_from_trial.png){width=100%}
 
 ## 
 Causality:

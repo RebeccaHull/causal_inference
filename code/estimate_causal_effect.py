@@ -19,6 +19,7 @@ import polars as pl
 import pymc as pm
 import arviz as az
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
@@ -81,7 +82,7 @@ az.plot_trace(trace, combined=True)
 
 
 # Save the figure as a file
-plt.savefig("trace_plot.png", dpi=300, bbox_inches="tight")
+plt.savefig("../figures/trace_plot_for_estimating_causal_effect.png", dpi=300, bbox_inches="tight")
 
 # Show the plot (optional)
 plt.show()

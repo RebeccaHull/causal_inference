@@ -67,6 +67,3 @@ with pm.Model() as foxes_model:
 # Sample
 with foxes_model:
     draw = pm.sample()
-
-
-
