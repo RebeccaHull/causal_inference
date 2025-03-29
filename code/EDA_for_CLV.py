@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Read in the dataset (CSV format)
-data = pd.read_csv('CLV.csv')
+data = pd.read_csv('../data/CLV.csv')
 
 print(data.columns)
 
