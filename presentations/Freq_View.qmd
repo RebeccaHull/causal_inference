@@ -44,7 +44,7 @@ the covariance of the gradient of the log likelihood (also called the score func
 
 ## 
 
-![](bootstrapPics.png){width=70%}
+![](../figures/bootstrapPics.png){width=70%}
 
 ## CI
 
@@ -85,7 +85,7 @@ assuming our goal is to **minimize squared error.**
 - Picture on next slide
 
 ## 
-![](162.png){width=70%}
+![](../figures/162.png){width=70%}
 
 ## How do variance & bias influence each other?
-![](targets.png){width=70%}
+![](..figures/targets.png){width=70%}
