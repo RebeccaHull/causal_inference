@@ -422,27 +422,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 40 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 43 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.52  1.55    998.92   1004.62       0.03     0.02   1968.57   
-    beta[0]  69999.87  0.16  69999.56  70000.16       0.00     0.00   2776.47   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3388.06   
-    beta[2]      5.11  0.12      4.87      5.33       0.00     0.00   2777.60   
-    beta[3]      0.88  0.23      0.45      1.32       0.00     0.00   3125.01   
-    beta[4]      2.72  0.12      2.50      2.93       0.00     0.00   2974.97   
-    beta[5]   1000.16  0.66    998.88   1001.35       0.01     0.01   4124.04   
-    sigma        3.15  0.23      2.70      3.57       0.00     0.00   3620.76   
+    alpha     1001.57  1.59    998.38   1004.45       0.04     0.03   1960.74   
+    beta[0]  69999.86  0.16  69999.57  70000.16       0.00     0.00   3010.95   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3073.83   
+    beta[2]      5.11  0.12      4.87      5.34       0.00     0.00   3056.07   
+    beta[3]      0.87  0.23      0.43      1.30       0.00     0.00   2868.12   
+    beta[4]      2.72  0.12      2.51      2.94       0.00     0.00   3136.02   
+    beta[5]   1000.14  0.66    998.87   1001.33       0.01     0.01   3653.73   
+    sigma        3.15  0.23      2.75      3.60       0.00     0.00   3510.23   
 
              ess_tail  r_hat  
-    alpha     2336.00    1.0  
-    beta[0]   2699.22    1.0  
-    beta[1]   2958.23    1.0  
-    beta[2]   2596.97    1.0  
-    beta[3]   2769.42    1.0  
-    beta[4]   2552.51    1.0  
-    beta[5]   2817.21    1.0  
-    sigma     2876.28    1.0  
+    alpha     2276.80    1.0  
+    beta[0]   2702.40    1.0  
+    beta[1]   2460.50    1.0  
+    beta[2]   3132.96    1.0  
+    beta[3]   2947.61    1.0  
+    beta[4]   2293.02    1.0  
+    beta[5]   2879.20    1.0  
+    sigma     2774.73    1.0  
 
 ![](report_files/figure-commonmark/cell-8-output-6.png)
 
@@ -615,3 +615,100 @@ A few changes I made:
 - I updated my DAG along the way.
 
 ![DAG](../figures/DAG_CLV.jpg)
+
+## Milestone 12: Consider Matching Strategy
+
+Using the observational data from Kaggle, I could do propensity scoring
+as a form of matching. My control group would be those in the dataset
+who only have an Aurora card. The treatment groups would be those with
+either Nova or Star. My response variable would then be CLV and
+comparing the treatment group to the control group.
+
+I’d need to use propensity score matching because of the curse of
+dimensionality. This just means that I have several variables I want to
+group by, so using a propensity score would be best. I want to match
+observations (which are individual people) by country, province, city,
+postal code, gender, education, marital status, enrollment type,
+enrollment year, enrollment month, and salary.
+
+I filtered out all observations who had cancelled their card for
+simplicity. I also imputed salary values for those missing those values.
+I substituted the blanks with the median.
+
+``` python
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.neighbors import NearestNeighbors
+import numpy as np
+
+# Load your data
+df = pd.read_csv("CLV.csv")
+
+# For now, let’s filter out all cancellations for simplicity
+df = df[df['Cancellation Year'].isna()]
+
+# Step 2: Define treatment variable
+df['treatment'] = df['Loyalty Card'].apply(lambda x: 1 if x in ['Nova', 'Star'] else 0)
+
+# Step 3: Select covariates
+covariates = ['Country', 'Province', 'City', 'Postal Code', 'Gender', 'Education', 
+              'Marital Status', 'Enrollment Type', 'Enrollment Year', 'Enrollment Month']
+
+# Handle missing salary with median imputation
+imputer = SimpleImputer(strategy='median')
+df['Salary'] = imputer.fit_transform(df[['Salary']])
+
+# One-hot encode categorical variables
+df_encoded = pd.get_dummies(df[covariates], drop_first=True)
+
+# Step 4: Estimate propensity scores
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_encoded)
+
+log_reg = LogisticRegression(max_iter=1000)
+log_reg.fit(X_scaled, df['treatment'])
+df['propensity_score'] = log_reg.predict_proba(X_scaled)[:, 1]
+
+# Step 5: Matching using Nearest Neighbors
+treated = df[df['treatment'] == 1]
+control = df[df['treatment'] == 0]
+
+# Match each treated unit to the nearest control unit
+nn = NearestNeighbors(n_neighbors=1)
+nn.fit(control[['propensity_score']])
+distances, indices = nn.kneighbors(treated[['propensity_score']])
+
+matched_control = control.iloc[indices.flatten()].copy()
+matched_treated = treated.reset_index(drop=True)
+
+# Step 6: Compare outcomes
+matched_df = pd.concat([matched_treated, matched_control])
+print("Average CLV - Treated:", matched_treated['CLV'].mean())
+print("Average CLV - Matched Control:", matched_control['CLV'].mean())
+print("Estimated treatment effect on CLV:", matched_treated['CLV'].mean() - matched_control['CLV'].mean())
+
+
+# Average CLV - Treated: 7282.511146278872
+# Average CLV - Matched Control: 10571.655396065013
+# Estimated treatment effect on CLV: -3289.144249786141
+```
+
+After running propensity score matching to estimate the effect of having
+a higher-tier loyalty card (Nova or Star) on Customer Lifetime Value
+(CLV), I found a **surprising negative treatment effect.** On average,
+the CLV for Nova/Star members was about \$7,283, while the matched
+Aurora (control group) members had a much higher average CLV of
+\$10,572, **resulting in an estimated treatment effect of -\$3,289.**
+This was unexpected, since I initially hypothesized that a higher-tier
+card would be associated with higher CLV.
+
+There are a few possible explanations for this result. First, it’s
+likely that the loyalty tier doesn’t cause high CLV, but rather that low
+CLV prompts the company to incentivize getting higher-tier cards in an
+effort to increase engagement. Second, even though matching helps reduce
+bias, it may not eliminate selection effects due to unobserved variables
+(like purchase frequency). Finally, the Aurora group might consist of
+legacy or premium customers who already have high CLV without needing
+upgrades.
