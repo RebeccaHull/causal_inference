@@ -525,3 +525,11 @@ A few changes I made:
 - I updated my DAG along the way.
 
 ![DAG](../figures/DAG_CLV.jpg)
+
+## Milestone 12: Matching Strategy
+
+I implemented a matching strategy using propensity scores to see if getting a higher loyalty card (Star or Nova) caused an increase in CLV. I found a surprising result! Not only did it not increase CLV, it actually decreased CLV!
+
+## Milestone 13: Regression Discontinuity and Marginal Effects
+
+I do not think these apply to this project. To see if regression discontinuity made sense, I graphed salary vs CLV and there is not a clear cutoff or discontinuity. It was fun learning about this concept though!

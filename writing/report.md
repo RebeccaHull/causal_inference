@@ -422,27 +422,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 40 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 66 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.52  1.55    998.92   1004.62       0.03     0.02   1968.57   
-    beta[0]  69999.87  0.16  69999.56  70000.16       0.00     0.00   2776.47   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3388.06   
-    beta[2]      5.11  0.12      4.87      5.33       0.00     0.00   2777.60   
-    beta[3]      0.88  0.23      0.45      1.32       0.00     0.00   3125.01   
-    beta[4]      2.72  0.12      2.50      2.93       0.00     0.00   2974.97   
-    beta[5]   1000.16  0.66    998.88   1001.35       0.01     0.01   4124.04   
-    sigma        3.15  0.23      2.70      3.57       0.00     0.00   3620.76   
+    alpha     1001.48  1.58    998.62   1004.62       0.04     0.03   1926.85   
+    beta[0]  69999.86  0.16  69999.57  70000.17       0.00     0.00   2855.59   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3234.23   
+    beta[2]      5.12  0.12      4.90      5.35       0.00     0.00   2660.59   
+    beta[3]      0.89  0.24      0.47      1.36       0.00     0.00   3078.41   
+    beta[4]      2.72  0.11      2.51      2.93       0.00     0.00   3101.11   
+    beta[5]   1000.13  0.65    998.97   1001.40       0.01     0.01   3343.68   
+    sigma        3.15  0.23      2.71      3.56       0.00     0.00   3107.22   
 
              ess_tail  r_hat  
-    alpha     2336.00    1.0  
-    beta[0]   2699.22    1.0  
-    beta[1]   2958.23    1.0  
-    beta[2]   2596.97    1.0  
-    beta[3]   2769.42    1.0  
-    beta[4]   2552.51    1.0  
-    beta[5]   2817.21    1.0  
-    sigma     2876.28    1.0  
+    alpha     2157.50    1.0  
+    beta[0]   2771.78    1.0  
+    beta[1]   2895.74    1.0  
+    beta[2]   2856.69    1.0  
+    beta[3]   2717.77    1.0  
+    beta[4]   2875.92    1.0  
+    beta[5]   2758.69    1.0  
+    sigma     3090.07    1.0  
 
 ![](report_files/figure-commonmark/cell-8-output-6.png)
 
@@ -615,3 +615,17 @@ A few changes I made:
 - I updated my DAG along the way.
 
 ![DAG](../figures/DAG_CLV.jpg)
+
+## Milestone 12: Matching Strategy
+
+I implemented a matching strategy using propensity scores to see if
+getting a higher loyalty card (Star or Nova) caused an increase in CLV.
+I found a surprising result! Not only did it not increase CLV, it
+actually decreased CLV!
+
+## Milestone 13: Regression Discontinuity and Marginal Effects
+
+I do not think these apply to this project. To see if regression
+discontinuity made sense, I graphed salary vs CLV and there is not a
+clear cutoff or discontinuity. It was fun learning about this concept
+though!
