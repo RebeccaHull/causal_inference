@@ -89,7 +89,7 @@ What my code does:
 - Summarizes the posterior distributions of parameters and plots the marginal posterior distributions.
 
 ## My Causal Effects
-![](../figures/results_from_trial.png){width=100%}
+![](results_from_trial.png){width=100%}
 
 ## Conjoint Experiment through Survey
 
@@ -153,15 +153,15 @@ I ran a conjoint experiment through a survey using Discover Sawtooth Software. I
 
 ##
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
 
 ##
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 
 ## Implement Diff-in-Diff Strategy with Synthetic Data
-![DiD](../figures/DiD1.png)
+![](DiD1.png)
 
 
 ## Diff-in-Diff Results
@@ -187,7 +187,7 @@ Average Matched Control CLV (Aurora): $10,817.40
 
 ## Matching Strategy Code
 
-![DiD](../figures/matching.png)
+![](matching.png)
 
 ## Possible Reasons Behind the Results
 
