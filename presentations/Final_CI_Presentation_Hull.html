@@ -173,11 +173,7 @@
 <img data-src="../figures/DAG_CLV.jpg" style="width:100.0%" class="r-stretch"></section>
 <section id="identification-strategy" class="slide level2">
 <h2>Identification Strategy</h2>
-<ul>
-<li><p>There were a total of 23 different paths (irrespective of arrow directionality) from Loyalty Card Status to CLV.</p></li>
-<li><p>Identified backdoor paths and created adjustment set.</p></li>
-<li><p>In order to do causal inference, my model will need to include: Loyalty Card Status, CLV, Income, Travel Frequency, Company Marketing Strategy, and Customer Engagement. (These last 4 will need to be conditioned on.)</p></li>
-</ul>
+<p>In order to do causal inference and control for confounding variables, my model will need to include: Loyalty Card Status, CLV, Income, Travel Frequency, Company Marketing Strategy, and Customer Engagement. (These last 4 will need to be conditioned on.)</p>
 </section>
 <section id="practice-simulate-data-and-recover-parameters" class="slide level2">
 <h2>Practice: Simulate Data and Recover Parameters</h2>
@@ -188,7 +184,6 @@
 <li><p>Step 4: Create and train the linear regression model.</p></li>
 <li><p>Step 5: Have you recovered the parameters?</p></li>
 </ul>
-<p>Next slide has code &amp; results</p>
 </section>
 <section id="parameters-i-set-matched-what-i-got-back" class="slide level2">
 <h2>Parameters I set matched what I got back</h2>
@@ -283,11 +278,30 @@
 <img data-src="../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png" class="r-stretch quarto-figure-center"><p class="caption">DAG</p></section>
 <section id="implement-diff-in-diff-strategy" class="slide level2">
 <h2>Implement Diff-in-Diff Strategy</h2>
+
+<img data-src="../figures/DiD1.png" class="r-stretch quarto-figure-center"><p class="caption">DiD</p></section>
+<section id="diff-in-diff-results" class="slide level2">
+<h2>Diff-in-Diff Results</h2>
+<p>Pre/post difference in control group = 3006.32 Pre/post difference in treatment group = 4935.59 Difference in differences = 1929.27</p>
 <p>Those who upgraded to a higher loyalty status (aka got the treatment) had an increase of $1929.27 in CLV after they upgraded from an Aurora card to a higher status loyalty card.</p>
 </section>
 <section id="matching-strategy" class="slide level2">
 <h2>Matching Strategy</h2>
 <p>I implemented a matching strategy using propensity scores to see if getting a higher loyalty card (Star or Nova) caused an increase in CLV. I found a surprising result! Not only did it not increase CLV, it actually decreased CLV!</p>
+<p>Average CLV - Treated: 7282.511146278872 Average CLV - Matched Control: 10817.3978716852 Estimated treatment effect on CLV: -3534.886725406328</p>
+</section>
+<section id="matching-results" class="slide level2">
+<h2>Matching Results</h2>
+
+<img data-src="../figures/matching.png" class="r-stretch quarto-figure-center"><p class="caption">DiD</p></section>
+<section id="matching-result-possible-reasoning" class="slide level2">
+<h2>Matching Result Possible Reasoning</h2>
+<ul>
+<li><p>Card upgrades may be a <strong>response to low CLV</strong>, not the cause — companies might give better cards to underperforming customers to boost engagement.</p></li>
+<li><p><strong>Unobserved factors</strong> like shopping frequency could still bias results, even with matching.</p></li>
+<li><p><strong>Aurora users might naturally have higher CLV</strong>, possibly because they’re long-time or high-value customers who never needed an upgrade.</p></li>
+<li><p>If there are <strong>very few Aurora members</strong>, the matched control group could be small and skewed by outliers with unusually high CLV.</p></li>
+</ul>
 </section>
 <section id="conclusion" class="slide level2">
 <h2>Conclusion</h2>
