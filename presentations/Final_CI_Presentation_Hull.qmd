@@ -1,7 +1,11 @@
 ---
 title: "Airline Loyalty Causal Inference"
 subtitle: "By: Rebecca Hull"
-format: revealjs
+format:
+  revealjs:
+    self-contained: false
+resources:
+  - ../figures/
 license: "CC BY-SA 4.0"
 ---
 
@@ -25,27 +29,28 @@ People with higher-tier cards (Nova or Star) have **lower** CLV than similar peo
 
 ## Data Structure
 
-![](../figures/data_structure.png){width=100%}
+![](data_structure.png){width=100%}
+
 
 ## Exploratory Data Analysis
 
-![](../figures/clv_histogram.png){width=100%}
+![](clv_histogram.png){width=100%}
 
 ## Exploratory Data Analysis
 
-![](../figures/enrollment_type_bar_chart.png){width=100%}
+![](enrollment_type_bar_chart.png){width=100%}
 
 ## Exploratory Data Analysis
 
-![](../figures/loyalty_card_distribution_bar_chart.png){width=100%}
+![](loyalty_card_distribution_bar_chart.png){width=100%}
 
 ## Exploratory Data Analysis
 
-![](../figures/salary_histogram.png){width=100%}
+![](salary_histogram.png){width=100%}
 
 ## DAG
 
-![](../figures/DAG_CLV.jpg){width=100%}
+![](DAG_CLV.jpg){width=100%}
 
 
 ## Identification Strategy
@@ -66,7 +71,7 @@ In order to do causal inference and control for confounding variables, my model 
 
 ## Parameters I set matched what I got back
 
-![](../figures/parameters.png){width=100%}
+![](parameters.png){width=100%}
 
 
 ## Estimate My Causal Effects
@@ -92,67 +97,67 @@ I ran a conjoint experiment through a survey using Discover Sawtooth Software. I
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
 
 ##
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+![](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
 
 ##
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+![](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
 
 ##
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+![](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
 
 ##
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+![](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
 
 ##
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+![](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+![](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
 
 ##
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 
 ## Implement Diff-in-Diff Strategy with Synthetic Data
