@@ -34,7 +34,7 @@ People with higher-tier cards (Nova or Star) have **lower** CLV than similar peo
 
 ## Exploratory Data Analysis
 
-![](clv_histogram.png){width=100%}
+![](hist_clv.png){width=100%}
 
 ## Exploratory Data Analysis
 
@@ -46,7 +46,7 @@ People with higher-tier cards (Nova or Star) have **lower** CLV than similar peo
 
 ## Exploratory Data Analysis
 
-![](salary_histogram.png){width=100%}
+![](hist_of_salary.png){width=100%}
 
 ## DAG
 
