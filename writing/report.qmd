@@ -26,11 +26,11 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 This is the first DAG I created.
 
-![Initial Old DAG](../figures/Old_DAG.png)
+![Initial Old DAG](Old_DAG.png)
 
 This is the second DAG I created. I add more variables because I have most of these columns in my dataset.
 
-![Second Iteration of Initial Old DAG](../figures/Old_DAG_Updated.png)
+![Second Iteration of Initial Old DAG](Old_DAG_Updated.png)
 
 ## Milestone 4: Identification Strategy
 
@@ -93,6 +93,7 @@ Adjustment Set: I, TF, CMS, and CE.
 ## Milestone 5: Simulate Data and Recover Parameters
 
 ```{python}
+#| eval: false
 import numpy as np
 import polars as pl
 import seaborn as sns
@@ -160,6 +161,14 @@ print(f'Slope for loyalty_card_status: {model.coef_[5]}')
 
 # Have you recovered the parameters?
 # Yes
+
+# Intercept: 1001.5413256846368
+# Slope for x: 69999.86275851386
+# Slope for flight_dist: 3499.9999835407984
+# Slope for travel_freq: 5.112035246336143
+# Slope for cust_marketing_strat: 0.8774017286699657
+# Slope for cust_engagement: 2.7190101859602787
+# Slope for loyalty_card_status: 1000.1457705767122
 ```
 
 In this code, a simulated dataset is created using various predictors (independent variables) to estimate the Customer Lifetime Value (CLV), which is the outcome (dependent variable). The code first defines the parameter values for each predictor, including factors like income, flight distance, travel frequency, customer marketing strategy, customer engagement, and loyalty card status. It then generates random values for these predictors and combines them in a linear equation to simulate CLV. This equation also includes a small amount of random noise to make the data more realistic.
@@ -190,10 +199,10 @@ for p in ax.patches:
                 xytext=(0, 5), textcoords='offset points')
 
 # Save the figure
-plt.savefig('../figures/loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
+plt.savefig('loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
-![Loyalty Card Status Bar Chart](../figures/loyalty_card_distribution_bar_chart.png)
+![Loyalty Card Status Bar Chart](loyalty_card_distribution_bar_chart.png)
 
 Most people have an income between roughly $80,000 and $125,000. This is expected. There are of course some who have higher salaries, hence the right skew.
 
@@ -213,27 +222,7 @@ plt.ylabel('Frequency')
 plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/salary_histogram.png)
-
-Most people have an income between roughly $80,000 and $125,000. This is expected. There are of course some who have higher salaries, hence the right skew.
-
-```{python}
-#| eval: false
-# Clean the data by removing null, empty, and negative salary values
-data_clean = data[data['Salary'].notnull() & (data['Salary'] != '')]
-data_clean = data_clean[data_clean['Salary'] >= 0]
-
-# Plot the histogram
-plt.hist(data_clean['Salary'], bins=8, color='skyblue', edgecolor='black')
-plt.title('Histogram of Salary')
-plt.xlabel('Salary')
-plt.ylabel('Frequency')
-
-# Save the figure
-plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
-```
-
-![Salary Histogram](../figures/salary_histogram.png)
+![Salary Histogram](hist_of_salary.png)
 
 Travel Frequency is how frequently a person travels. I do not have this variable in my dataset.
 
@@ -261,7 +250,7 @@ for p in ax.patches:
 plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/enrollment_type_bar_chart.png)
+![Salary Histogram](enrollment_type_bar_chart.png)
 
 Customer Engagement is how engaged a person is in the airline. I do not have this variable in my dataset.
 
@@ -285,7 +274,7 @@ plt.ylabel('Count')
 plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/clv_histogram.png)
+![Salary Histogram](hist_clv.png)
 
 
 ## Milestone 7: Estimate Causal Effects
@@ -360,10 +349,10 @@ az.plot_trace(trace, combined=True)
 
 
 # Save the figure as a file
-plt.savefig("trace_plot.png", dpi=300, bbox_inches="tight")
+plt.savefig("../figures/trace_plot.png", dpi=300, bbox_inches="tight")
 ```
 
-![trace plot](../figures/trace_plot.png)
+![trace plot](trace_plot.png)
 
 
 ## Milestone 8: Intermediate Presentation
@@ -378,37 +367,37 @@ See my intermediate presentation [Intermediate Presentation Slides](https://gith
 
 I ran a conjoint experiment through a survey using Discover Sawtooth Software. I was testing how desirable different package deals (with specified benefits) were for different loyalty cards. I got 33 responses. Here are my results:
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 
 
@@ -524,7 +513,7 @@ A few changes I made:
 
 - I updated my DAG along the way.
 
-![DAG](../figures/DAG_CLV.jpg)
+![DAG](DAG_CLV.jpg)
 
 ## Milestone 12: Matching Strategy
 
@@ -541,3 +530,7 @@ I created my final presentation!
 ## Milestone 15: Finish Report and GitHub Pages
 
 I finished my report and created my GitHUb page to represent my portfolio!
+
+I created my DAG in Dagitty so that it looked professional.
+
+![Dagitty DAG](DagittyDAG.png)

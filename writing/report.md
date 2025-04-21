@@ -38,12 +38,12 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 This is the first DAG I created.
 
-![Initial Old DAG](../figures/Old_DAG.png)
+![Initial Old DAG](Old_DAG.png)
 
 This is the second DAG I created. I add more variables because I have
 most of these columns in my dataset.
 
-![Second Iteration of Initial Old DAG](../figures/Old_DAG_Updated.png)
+![Second Iteration of Initial Old DAG](Old_DAG_Updated.png)
 
 ## Milestone 4: Identification Strategy
 
@@ -179,15 +179,15 @@ print(f'Slope for loyalty_card_status: {model.coef_[5]}')
 
 # Have you recovered the parameters?
 # Yes
-```
 
-    Intercept: 1001.5413256846368
-    Slope for x: 69999.86275851386
-    Slope for flight_dist: 3499.9999835407984
-    Slope for travel_freq: 5.112035246336143
-    Slope for cust_marketing_strat: 0.8774017286699657
-    Slope for cust_engagement: 2.7190101859602787
-    Slope for loyalty_card_status: 1000.1457705767122
+# Intercept: 1001.5413256846368
+# Slope for x: 69999.86275851386
+# Slope for flight_dist: 3499.9999835407984
+# Slope for travel_freq: 5.112035246336143
+# Slope for cust_marketing_strat: 0.8774017286699657
+# Slope for cust_engagement: 2.7190101859602787
+# Slope for loyalty_card_status: 1000.1457705767122
+```
 
 In this code, a simulated dataset is created using various predictors
 (independent variables) to estimate the Customer Lifetime Value (CLV),
@@ -232,11 +232,11 @@ for p in ax.patches:
                 xytext=(0, 5), textcoords='offset points')
 
 # Save the figure
-plt.savefig('../figures/loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
+plt.savefig('loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
 ![Loyalty Card Status Bar
-Chart](../figures/loyalty_card_distribution_bar_chart.png)
+Chart](loyalty_card_distribution_bar_chart.png)
 
 Most people have an income between roughly \$80,000 and \$125,000. This
 is expected. There are of course some who have higher salaries, hence
@@ -257,28 +257,7 @@ plt.ylabel('Frequency')
 plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/salary_histogram.png)
-
-Most people have an income between roughly \$80,000 and \$125,000. This
-is expected. There are of course some who have higher salaries, hence
-the right skew.
-
-``` python
-# Clean the data by removing null, empty, and negative salary values
-data_clean = data[data['Salary'].notnull() & (data['Salary'] != '')]
-data_clean = data_clean[data_clean['Salary'] >= 0]
-
-# Plot the histogram
-plt.hist(data_clean['Salary'], bins=8, color='skyblue', edgecolor='black')
-plt.title('Histogram of Salary')
-plt.xlabel('Salary')
-plt.ylabel('Frequency')
-
-# Save the figure
-plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
-```
-
-![Salary Histogram](../figures/salary_histogram.png)
+![Salary Histogram](hist_of_salary.png)
 
 Travel Frequency is how frequently a person travels. I do not have this
 variable in my dataset.
@@ -308,7 +287,7 @@ for p in ax.patches:
 plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/enrollment_type_bar_chart.png)
+![Salary Histogram](enrollment_type_bar_chart.png)
 
 Customer Engagement is how engaged a person is in the airline. I do not
 have this variable in my dataset.
@@ -334,7 +313,7 @@ plt.ylabel('Count')
 plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](../figures/clv_histogram.png)
+![Salary Histogram](hist_clv.png)
 
 ## Milestone 7: Estimate Causal Effects
 
@@ -408,7 +387,7 @@ az.plot_trace(trace, combined=True)
 
 
 # Save the figure as a file
-plt.savefig("trace_plot.png", dpi=300, bbox_inches="tight")
+plt.savefig("../figures/trace_plot.png", dpi=300, bbox_inches="tight")
 ```
 
     Initializing NUTS using jitter+adapt_diag...
@@ -422,31 +401,31 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 79 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 83 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.56  1.57    998.62   1004.47       0.04     0.03   1772.74   
-    beta[0]  69999.86  0.16  69999.56  70000.16       0.00     0.00   2754.81   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3143.36   
-    beta[2]      5.11  0.13      4.87      5.34       0.00     0.00   2605.21   
-    beta[3]      0.87  0.23      0.42      1.29       0.00     0.00   2878.09   
-    beta[4]      2.72  0.12      2.51      2.95       0.00     0.00   3342.18   
-    beta[5]   1000.14  0.65    998.97   1001.37       0.01     0.01   3524.28   
-    sigma        3.15  0.24      2.70      3.58       0.00     0.00   3509.32   
+    alpha     1001.52  1.54    998.66   1004.35       0.04     0.02   1895.57   
+    beta[0]  69999.86  0.16  69999.57  70000.16       0.00     0.00   2956.39   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3215.75   
+    beta[2]      5.11  0.12      4.89      5.35       0.00     0.00   2989.31   
+    beta[3]      0.88  0.23      0.45      1.32       0.00     0.00   3187.06   
+    beta[4]      2.72  0.12      2.49      2.93       0.00     0.00   2847.99   
+    beta[5]   1000.14  0.67    998.85   1001.37       0.01     0.01   3510.58   
+    sigma        3.15  0.23      2.71      3.57       0.00     0.00   2978.58   
 
              ess_tail  r_hat  
-    alpha     2003.63    1.0  
-    beta[0]   2829.75    1.0  
-    beta[1]   2702.17    1.0  
-    beta[2]   2691.32    1.0  
-    beta[3]   2849.16    1.0  
-    beta[4]   2629.37    1.0  
-    beta[5]   2999.68    1.0  
-    sigma     2894.80    1.0  
+    alpha     2030.87    1.0  
+    beta[0]   2981.03    1.0  
+    beta[1]   2555.00    1.0  
+    beta[2]   2569.18    1.0  
+    beta[3]   2590.51    1.0  
+    beta[4]   2245.87    1.0  
+    beta[5]   2976.41    1.0  
+    sigma     2792.04    1.0  
 
-![](report_files/figure-commonmark/cell-8-output-6.png)
+![](report_files/figure-commonmark/cell-7-output-6.png)
 
-![trace plot](../figures/trace_plot.png)
+![trace plot](trace_plot.png)
 
 ## Milestone 8: Intermediate Presentation
 
@@ -467,37 +446,37 @@ Software. I was testing how desirable different package deals (with
 specified benefits) were for different loyalty cards. I got 33
 responses. Here are my results:
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
 
-![DAG](../figures/Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+![DAG](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
 
-![DAG](../figures/Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 ## Milestone 10: Implement Diff-in-Diff Strategy
 
@@ -614,7 +593,7 @@ A few changes I made:
 
 - I updated my DAG along the way.
 
-![DAG](../figures/DAG_CLV.jpg)
+![DAG](DAG_CLV.jpg)
 
 ## Milestone 12: Matching Strategy
 
@@ -638,3 +617,7 @@ I created my final presentation!
 
 I finished my report and created my GitHUb page to represent my
 portfolio!
+
+I created my DAG in Dagitty so that it looked professional.
+
+![Dagitty DAG](DagittyDAG.png)
