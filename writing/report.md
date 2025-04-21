@@ -422,27 +422,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 66 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 79 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.48  1.58    998.62   1004.62       0.04     0.03   1926.85   
-    beta[0]  69999.86  0.16  69999.57  70000.17       0.00     0.00   2855.59   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3234.23   
-    beta[2]      5.12  0.12      4.90      5.35       0.00     0.00   2660.59   
-    beta[3]      0.89  0.24      0.47      1.36       0.00     0.00   3078.41   
-    beta[4]      2.72  0.11      2.51      2.93       0.00     0.00   3101.11   
-    beta[5]   1000.13  0.65    998.97   1001.40       0.01     0.01   3343.68   
-    sigma        3.15  0.23      2.71      3.56       0.00     0.00   3107.22   
+    alpha     1001.56  1.57    998.62   1004.47       0.04     0.03   1772.74   
+    beta[0]  69999.86  0.16  69999.56  70000.16       0.00     0.00   2754.81   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3143.36   
+    beta[2]      5.11  0.13      4.87      5.34       0.00     0.00   2605.21   
+    beta[3]      0.87  0.23      0.42      1.29       0.00     0.00   2878.09   
+    beta[4]      2.72  0.12      2.51      2.95       0.00     0.00   3342.18   
+    beta[5]   1000.14  0.65    998.97   1001.37       0.01     0.01   3524.28   
+    sigma        3.15  0.24      2.70      3.58       0.00     0.00   3509.32   
 
              ess_tail  r_hat  
-    alpha     2157.50    1.0  
-    beta[0]   2771.78    1.0  
-    beta[1]   2895.74    1.0  
-    beta[2]   2856.69    1.0  
-    beta[3]   2717.77    1.0  
-    beta[4]   2875.92    1.0  
-    beta[5]   2758.69    1.0  
-    sigma     3090.07    1.0  
+    alpha     2003.63    1.0  
+    beta[0]   2829.75    1.0  
+    beta[1]   2702.17    1.0  
+    beta[2]   2691.32    1.0  
+    beta[3]   2849.16    1.0  
+    beta[4]   2629.37    1.0  
+    beta[5]   2999.68    1.0  
+    sigma     2894.80    1.0  
 
 ![](report_files/figure-commonmark/cell-8-output-6.png)
 
@@ -629,3 +629,12 @@ I do not think these apply to this project. To see if regression
 discontinuity made sense, I graphed salary vs CLV and there is not a
 clear cutoff or discontinuity. It was fun learning about this concept
 though!
+
+## Milestone 14: Final Presentation
+
+I created my final presentation!
+
+## Milestone 15: Finish Report and GitHub Pages
+
+I finished my report and created my GitHUb page to represent my
+portfolio!

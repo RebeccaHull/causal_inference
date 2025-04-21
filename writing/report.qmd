@@ -533,3 +533,11 @@ I implemented a matching strategy using propensity scores to see if getting a hi
 ## Milestone 13: Regression Discontinuity and Marginal Effects
 
 I do not think these apply to this project. To see if regression discontinuity made sense, I graphed salary vs CLV and there is not a clear cutoff or discontinuity. It was fun learning about this concept though!
+
+## Milestone 14: Final Presentation
+
+I created my final presentation!
+
+## Milestone 15: Finish Report and GitHub Pages
+
+I finished my report and created my GitHUb page to represent my portfolio!
