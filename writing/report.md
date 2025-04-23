@@ -3,10 +3,11 @@
 
 ## Milestone 1: Project Idea
 
-I love anything airline related, so my idea is to analyze some airline
-data to see if one thing causes another. Specifically, I want to see if
-having an airline’s loyalty card increases the revenue that customer
-makes for the airline (called CLV or Customer Lifetime Value).
+I’m really passionate about anything related to airlines, so for this
+project, I want to take a causal approach to analyzing airline data.
+Specifically, I’m interested in whether loyalty card programs actually
+increase an airline’s revenue, measured by Customer Lifetime Value
+(CLV).
 
 ## Milestone 2: Data Story
 
@@ -36,12 +37,16 @@ https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-im
 
 ## Milestone 3: DAG
 
-This is the first DAG I created.
+For the first DAG I created, I chose to use the variables from my
+dataset. I believed that demographics each influenced both CLV and
+loyalty card status. I also believed that loyalty card status affected
+flights and points which in turn affected CLV.
 
 ![Initial Old DAG](Old_DAG.png)
 
-This is the second DAG I created. I add more variables because I have
-most of these columns in my dataset.
+This is the second DAG I created when I considered even more variables
+than my previous DAG. I added more demographics, flight aspects, and
+points/economic aspects.
 
 ![Second Iteration of Initial Old DAG](Old_DAG_Updated.png)
 
@@ -287,7 +292,7 @@ for p in ax.patches:
 plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](enrollment_type_bar_chart.png)
+![Enrollment Type Bar Chart](enrollment_type_bar_chart.png)
 
 Customer Engagement is how engaged a person is in the airline. I do not
 have this variable in my dataset.
@@ -313,7 +318,7 @@ plt.ylabel('Count')
 plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 ```
 
-![Salary Histogram](hist_clv.png)
+![CLV Histogram](hist_clv.png)
 
 ## Milestone 7: Estimate Causal Effects
 
@@ -401,27 +406,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 83 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 63 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.52  1.54    998.66   1004.35       0.04     0.02   1895.57   
-    beta[0]  69999.86  0.16  69999.57  70000.16       0.00     0.00   2956.39   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3215.75   
-    beta[2]      5.11  0.12      4.89      5.35       0.00     0.00   2989.31   
-    beta[3]      0.88  0.23      0.45      1.32       0.00     0.00   3187.06   
-    beta[4]      2.72  0.12      2.49      2.93       0.00     0.00   2847.99   
-    beta[5]   1000.14  0.67    998.85   1001.37       0.01     0.01   3510.58   
-    sigma        3.15  0.23      2.71      3.57       0.00     0.00   2978.58   
+    alpha     1001.54  1.58    998.55   1004.50       0.03     0.02   2073.61   
+    beta[0]  69999.86  0.16  69999.55  70000.16       0.00     0.00   3172.77   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3162.71   
+    beta[2]      5.11  0.13      4.88      5.36       0.00     0.00   2750.57   
+    beta[3]      0.87  0.24      0.45      1.34       0.00     0.00   3211.19   
+    beta[4]      2.71  0.11      2.50      2.92       0.00     0.00   3788.70   
+    beta[5]   1000.15  0.65    998.97   1001.39       0.01     0.01   2609.00   
+    sigma        3.15  0.24      2.72      3.60       0.00     0.00   2977.16   
 
              ess_tail  r_hat  
-    alpha     2030.87    1.0  
-    beta[0]   2981.03    1.0  
-    beta[1]   2555.00    1.0  
-    beta[2]   2569.18    1.0  
-    beta[3]   2590.51    1.0  
-    beta[4]   2245.87    1.0  
-    beta[5]   2976.41    1.0  
-    sigma     2792.04    1.0  
+    alpha     2407.12    1.0  
+    beta[0]   2532.05    1.0  
+    beta[1]   2736.14    1.0  
+    beta[2]   2775.74    1.0  
+    beta[3]   2669.58    1.0  
+    beta[4]   2956.56    1.0  
+    beta[5]   2576.18    1.0  
+    sigma     2596.37    1.0  
 
 ![](report_files/figure-commonmark/cell-7-output-6.png)
 
@@ -446,37 +451,53 @@ Software. I was testing how desirable different package deals (with
 specified benefits) were for different loyalty cards. I got 33
 responses. Here are my results:
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
+![Been on
+airplane?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Ever%20been%20on%20a%20plane_%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
+![Are you
+employed?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+![Are you
+18+?](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
+![How often do you
+fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
+![Why do you
+fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
 
-![DAG](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+![Package Names: Star, Nova,
+Aurora](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
 
-![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
+![Benefit Grouping
+1](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
 
-![DAG](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+![Benefit Grouping
+2](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
 
-![DAG](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
+![Package
+Prices](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
 
-![DAG](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
+![Attribute
+Importance](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+![Would you buy a loyalty
+card?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
+![What’s your yearly income
+bracket?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
+![What’s your education
+level?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
+![What’s your age
+bracket?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+![What’s your
+gender?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
 
-![DAG](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
+![Are you
+married?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
 ## Milestone 10: Implement Diff-in-Diff Strategy
 
@@ -591,9 +612,37 @@ A few changes I made:
 - The Salary histogram no longer has a bin below zero (since you can’t
   have a negative salary).
 
-- I updated my DAG along the way.
+I updated my DAG throughout the project and finalized it using Dagitty
+to give it a more polished and professional appearance. In the DAG, the
+primary relationship I’m interested in is the effect of **loyalty card
+status** on **Customer Lifetime Value (CLV)**.
 
-![DAG](DAG_CLV.jpg)
+Several other variables influence this relationship. **Travel
+frequency** plays a key role—it affects loyalty card status because
+people who travel more frequently are more likely to seek the benefits
+that come with being a frequent flyer. It also influences total **flight
+distance**, since more trips naturally lead to a greater accumulated
+distance. In turn, total flight distance affects CLV, as longer flights
+tend to be more expensive and generate more revenue for the airline.
+
+**Income** is another upstream variable that influences travel frequency
+(higher income typically enables more travel), loyalty card status (some
+tiers may come with fees or require higher spending), and influences CLV
+(wealthier customers may spend more with the airline overall).
+
+**Company marketing strategy** also feeds into the system by affecting
+travel frequency (e.g., through increased exposure to promotions),
+customer engagement, and loyalty card status (via targeted advertising).
+All of these, in turn, impact CLV. **Customer engagement** directly
+affects both loyalty card status and CLV, as more engaged customers are
+more likely to enroll in loyalty programs and continue spending.
+
+Finally, loyalty card status also affects **upgrades/perks** and
+**length of enrollment**, both of which can enhance a customer’s
+experience and increase their overall value to the airline, thereby
+contributing to CLV.
+
+![DAG](DagittyDAG.png)
 
 ## Milestone 12: Matching Strategy
 
@@ -617,7 +666,3 @@ I created my final presentation!
 
 I finished my report and created my GitHUb page to represent my
 portfolio!
-
-I created my DAG in Dagitty so that it looked professional.
-
-![Dagitty DAG](DagittyDAG.png)
