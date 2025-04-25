@@ -12,7 +12,7 @@ increase an airline’s revenue, measured by Customer Lifetime Value
 ## Milestone 2: Data Story
 
 Causal Inference Question: Does having a higher loyalty card status
-(Star, Nova, Aurora) cause an increase in CLV?
+(Star \> Nova \> Aurora) cause an increase in CLV?
 
 Context: I want to study if having a higher loyalty card status for an
 airline causes an increase in CLV. CLV is Customer Lifetime Value. It is
@@ -460,27 +460,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 66 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 49 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.60  1.52    998.78   1004.49       0.03     0.02   1971.61   
-    beta[0]  69999.85  0.16  69999.53  70000.14       0.00     0.00   2927.21   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3124.44   
-    beta[2]      5.11  0.12      4.87      5.33       0.00     0.00   2509.21   
-    beta[3]      0.87  0.24      0.43      1.32       0.00     0.00   2490.98   
-    beta[4]      2.72  0.11      2.51      2.93       0.00     0.00   3069.85   
-    beta[5]   1000.13  0.68    998.82   1001.36       0.01     0.01   3617.92   
-    sigma        3.15  0.24      2.71      3.57       0.00     0.00   3105.50   
+    alpha     1001.58  1.59    998.64   1004.55       0.04     0.03   1805.87   
+    beta[0]  69999.86  0.16  69999.56  70000.15       0.00     0.00   2823.29   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   2684.50   
+    beta[2]      5.11  0.13      4.87      5.35       0.00     0.00   2758.33   
+    beta[3]      0.88  0.24      0.45      1.33       0.00     0.00   2445.71   
+    beta[4]      2.72  0.11      2.50      2.93       0.00     0.00   3354.39   
+    beta[5]   1000.14  0.67    998.86   1001.35       0.01     0.01   4087.76   
+    sigma        3.15  0.23      2.74      3.59       0.00     0.00   3050.55   
 
              ess_tail  r_hat  
-    alpha     1977.64    1.0  
-    beta[0]   2511.64    1.0  
-    beta[1]   2603.17    1.0  
-    beta[2]   2456.08    1.0  
-    beta[3]   2586.81    1.0  
-    beta[4]   2725.43    1.0  
-    beta[5]   2891.44    1.0  
-    sigma     2512.52    1.0  
+    alpha     1927.37    1.0  
+    beta[0]   2556.38    1.0  
+    beta[1]   2259.48    1.0  
+    beta[2]   2501.20    1.0  
+    beta[3]   2517.01    1.0  
+    beta[4]   2789.61    1.0  
+    beta[5]   2920.65    1.0  
+    sigma     2817.24    1.0  
 
     <Figure size 672x480 with 0 Axes>
 
@@ -844,3 +844,100 @@ I finished my report and created my GitHUb page to represent my
 portfolio!
 
 Linear Regression Results on my Dataset:
+
+This code estimates the causal effect of loyalty status on CLV under the
+assumption that your adjustment set blocks all backdoor paths.
+
+``` python
+# Import Libraries
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# === STEP 1: Load your data ===
+df = pd.read_csv('data/CLV.csv')  # <-- Your file path looks good
+
+# === STEP 2: Map loyalty status to ordered numeric values ===
+loyalty_order = ['Aurora', 'Nova', 'Star']
+loyalty_map = {level: i for i, level in enumerate(loyalty_order)}
+df['loyalty_numeric'] = df['Loyalty Card'].map(loyalty_map)
+
+# === STEP 3: Drop rows with missing values in key columns ===
+df = df.dropna(subset=['loyalty_numeric', 'Salary', 'Enrollment Type', 'CLV'])
+
+# === STEP 4: Create dummy variables for enrollment type ===
+df = pd.get_dummies(df, columns=['Enrollment Type'], drop_first=True)
+
+# === STEP 5: Define your predictors ===
+predictors = ['loyalty_numeric', 'Salary'] + [col for col in df.columns if col.startswith('Enrollment Type_')]
+X = df[predictors]
+y = df['CLV']
+
+# === STEP 6: Fit the linear regression model ===
+model = LinearRegression()
+model.fit(X, y)
+
+# === STEP 7: Print results ===
+print(f'\nIntercept: {model.intercept_:.2f}')
+for name, coef in zip(X.columns, model.coef_):
+    print(f'Slope for {name}: {coef:.2f}')
+
+# Results
+# Intercept: 10652.88
+# Slope for loyalty_numeric: -1796.82
+# Slope for Salary: -0.00
+# Slope for Enrollment Type_Standard: -12.88
+```
+
+Intercept (10652.88): This is the baseline prediction for the Customer
+Lifetime Value (CLV). It’s what you’d expect if someone has the lowest
+loyalty status (Aurora), a salary of 0, and the reference type of
+enrollment (which is “Standard”).
+
+Loyalty Status (Slope: -1796.82): This is a surprising finding! As
+loyalty status increases (from Aurora to Nova, or Nova to Star), CLV
+actually goes down by about \$1,797. So, instead of CLV going up with
+loyalty, it’s going down.
+
+Salary (Slope: -0.00): There’s virtually no effect of salary on CLV.
+It’s so small that we can pretty much ignore it in this case.
+
+Enrollment Type (Slope: -12.88): If someone is enrolled through the
+“2018 Promotion” instead of the reference enrollment type (“Standard”),
+their CLV goes down by about \$13. This effect is very small compared to
+the big impact of loyalty status.
+
+*Reasoning:*
+
+Negative loyalty slope: Maybe higher loyalty levels are associated with
+more discounts / more free stuff, so total CLV (profitability) actually
+drops?
+
+Or it could just mean loyalty upgrades are happening after a decline in
+spending, not before.
+
+**Conclusion**
+
+The results of the linear regression analysis suggest a counterintuitive
+relationship between loyalty status and Customer Lifetime Value (CLV).
+Specifically, as loyalty status increases (from Aurora to Nova or Star),
+CLV decreases by approximately \$1,797. This could be due to several
+factors, such as higher loyalty levels being linked to more discounts or
+free offerings, which lower profitability. Alternatively, this negative
+relationship might reflect the fact that customers may upgrade their
+loyalty status after experiencing a decline in spending, rather than as
+a result of increased spending.
+
+In contrast, salary has almost no effect on CLV, which implies that
+salary isn’t a significant predictor in this case. Additionally, the
+enrollment type also shows a minimal impact on CLV, with the “2018
+Promotion” enrollment resulting in a slight decrease of about \$13 in
+CLV compared to the reference type.
+
+These findings highlight the importance of understanding the dynamics
+between loyalty status and customer behavior, suggesting that loyalty
+programs might not always drive the expected increases in profitability.
+Further research and analysis, potentially incorporating a more complex
+model or exploring other influencing factors, could offer more insights
+into these surprising results.
