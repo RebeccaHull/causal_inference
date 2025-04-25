@@ -50,7 +50,7 @@ People with higher-tier cards (Nova or Star) have **lower** CLV than similar peo
 
 ## DAG
 
-![](DAG_CLV.jpg){width=100%}
+![](DagittyDAG.png){width=100%}
 
 
 ## Identification Strategy
