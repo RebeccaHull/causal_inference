@@ -460,27 +460,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 46 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 49 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.54  1.57    998.56   1004.44       0.04     0.03   1716.47   
-    beta[0]  69999.86  0.16  69999.55  70000.15       0.00     0.00   2980.24   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   2676.18   
-    beta[2]      5.11  0.13      4.87      5.34       0.00     0.00   2797.21   
-    beta[3]      0.88  0.23      0.46      1.33       0.00     0.00   2803.72   
-    beta[4]      2.72  0.11      2.51      2.95       0.00     0.00   2857.42   
-    beta[5]   1000.14  0.66    998.90   1001.36       0.01     0.01   2888.85   
-    sigma        3.14  0.23      2.73      3.58       0.00     0.00   3357.19   
+    alpha     1001.56  1.56    998.74   1004.58       0.04     0.03   1607.19   
+    beta[0]  69999.86  0.16  69999.56  70000.17       0.00     0.00   2696.95   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3031.45   
+    beta[2]      5.11  0.13      4.88      5.35       0.00     0.00   2361.74   
+    beta[3]      0.87  0.24      0.40      1.30       0.00     0.00   2927.98   
+    beta[4]      2.72  0.12      2.48      2.93       0.00     0.00   2872.40   
+    beta[5]   1000.16  0.65    998.99   1001.41       0.01     0.01   2956.24   
+    sigma        3.15  0.24      2.71      3.59       0.00     0.00   2803.86   
 
              ess_tail  r_hat  
-    alpha     2254.65    1.0  
-    beta[0]   2647.25    1.0  
-    beta[1]   2493.25    1.0  
-    beta[2]   3006.42    1.0  
-    beta[3]   2695.00    1.0  
-    beta[4]   2503.09    1.0  
-    beta[5]   2612.51    1.0  
-    sigma     2569.07    1.0  
+    alpha     2295.84    1.0  
+    beta[0]   2503.90    1.0  
+    beta[1]   2794.52    1.0  
+    beta[2]   2500.84    1.0  
+    beta[3]   2034.57    1.0  
+    beta[4]   2279.24    1.0  
+    beta[5]   3041.83    1.0  
+    sigma     2693.37    1.0  
 
     <Figure size 672x480 with 0 Axes>
 

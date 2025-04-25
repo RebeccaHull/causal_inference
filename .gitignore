@@ -21,3 +21,5 @@ code/src/*
 !code/src/*.py
 !code/src/*.cpp
 !code/src/*.stan
+
+/.quarto/
