@@ -86,7 +86,10 @@ contributing to CLV.
 
 Based on the DAG, here are all possible paths (23 paths) from LCS
 (Loyalty Card Status) to CLV (Customer Lifetime Value). For simplicity,
-initials are used instead of the full names from the DAG.
+initials are used instead of the full names from the DAG. Key: CLV is
+Customer Lifetime Value, LCS is Loyalty Card Status, I is Income, TF is
+Travel Frequency, FD is Flight Distance, CMS is Customer Marketing
+Strategy, and CE is Customer Engagement.
 
 - LCS, CLV
 - LCS, I, CLV
@@ -124,7 +127,6 @@ Here are the backdoors & what to do about them:
 - LCS, I, TF, FD, CLV – Fork, Pipe, Pipe, Condition on FD
 - LCS, I, TF, CMS, CLV –Fork, Collider, Fork, Condition on CMS
 - LCS, I, TF, CMS, CE, CLV – Fork, Collider, Fork, Pipe, Condition on CE
-  (??)
 - LCS, TF, CLV – Fork, Condition on TF
 - LCS, TF, I, CLV – Fork, Pipe, Condition on I
 - LCS, TF, FD, CLV – Fork, Pipe, Condition on FD
@@ -148,6 +150,24 @@ need to condition on income, travel frequency, customer marketing
 strategy, and customer engagement.
 
 ## Milestone 5: Simulate Data and Recover Parameters
+
+In this code, a simulated dataset is created using various predictors
+(independent variables) to estimate the Customer Lifetime Value (CLV),
+which is the outcome (dependent variable). The code first defines the
+parameter values for each predictor, including factors like income,
+flight distance, travel frequency, customer marketing strategy, customer
+engagement, and loyalty card status. It then generates random values for
+these predictors and combines them in a linear equation to simulate CLV.
+This equation also includes a small amount of random noise to make the
+data more realistic.
+
+After generating the data, a linear regression model is applied to it
+using the `LinearRegression` function from the `sklearn` library. The
+model is trained using the predictors (`X`) and the simulated CLV
+values. Once the model is trained, the code prints the estimated
+coefficients for each predictor, which represent how each variable
+impacts the CLV. By examining these coefficients, we can understand the
+relationship between the predictors and CLV.
 
 ``` python
 # Import packages
@@ -229,23 +249,9 @@ print(f'Slope for loyalty_card_status: {model.coef_[5]}')
 # Slope for loyalty_card_status: 1000.1457705767122
 ```
 
-In this code, a simulated dataset is created using various predictors
-(independent variables) to estimate the Customer Lifetime Value (CLV),
-which is the outcome (dependent variable). The code first defines the
-parameter values for each predictor, including factors like income,
-flight distance, travel frequency, customer marketing strategy, customer
-engagement, and loyalty card status. It then generates random values for
-these predictors and combines them in a linear equation to simulate CLV.
-This equation also includes a small amount of random noise to make the
-data more realistic.
-
-After generating the data, a linear regression model is applied to it
-using the `LinearRegression` function from the `sklearn` library. The
-model is trained using the predictors (`X`) and the simulated CLV
-values. Once the model is trained, the code prints the estimated
-coefficients for each predictor, which represent how each variable
-impacts the CLV. By examining these coefficients, we can understand the
-relationship between the predictors and CLV.
+The code worked well because we successfully recovered our parameters
+and our estimated slopes are incredibly accurate to the parameter values
+we set.
 
 ## Milestone 6: Exploratory Data Analysis
 
@@ -454,27 +460,27 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 69 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 66 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.58  1.55    998.63   1004.42       0.03     0.02   1997.99   
-    beta[0]  69999.86  0.16  69999.57  70000.16       0.00     0.00   3256.60   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3000.73   
-    beta[2]      5.11  0.13      4.88      5.35       0.00     0.00   2916.16   
-    beta[3]      0.88  0.23      0.45      1.31       0.00     0.00   2706.60   
-    beta[4]      2.72  0.12      2.50      2.94       0.00     0.00   3031.66   
-    beta[5]   1000.14  0.68    998.91   1001.45       0.01     0.01   3568.40   
-    sigma        3.15  0.24      2.73      3.60       0.00     0.00   3777.89   
+    alpha     1001.60  1.52    998.78   1004.49       0.03     0.02   1971.61   
+    beta[0]  69999.85  0.16  69999.53  70000.14       0.00     0.00   2927.21   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3124.44   
+    beta[2]      5.11  0.12      4.87      5.33       0.00     0.00   2509.21   
+    beta[3]      0.87  0.24      0.43      1.32       0.00     0.00   2490.98   
+    beta[4]      2.72  0.11      2.51      2.93       0.00     0.00   3069.85   
+    beta[5]   1000.13  0.68    998.82   1001.36       0.01     0.01   3617.92   
+    sigma        3.15  0.24      2.71      3.57       0.00     0.00   3105.50   
 
              ess_tail  r_hat  
-    alpha     2237.46    1.0  
-    beta[0]   2705.62    1.0  
-    beta[1]   2719.65    1.0  
-    beta[2]   2784.36    1.0  
-    beta[3]   2629.60    1.0  
-    beta[4]   2421.33    1.0  
-    beta[5]   2998.96    1.0  
-    sigma     2810.31    1.0  
+    alpha     1977.64    1.0  
+    beta[0]   2511.64    1.0  
+    beta[1]   2603.17    1.0  
+    beta[2]   2456.08    1.0  
+    beta[3]   2586.81    1.0  
+    beta[4]   2725.43    1.0  
+    beta[5]   2891.44    1.0  
+    sigma     2512.52    1.0  
 
     <Figure size 672x480 with 0 Axes>
 
@@ -506,7 +512,7 @@ the assumptions are met.
 ## Milestone 8: Intermediate Presentation
 
 See my intermediate presentation [Intermediate Presentation
-Slides](https://github.com/RebeccaHull/causal_inference/blob/main/presentations/Intermediate_CI_Presentation_Hull.html).
+Slides](https://github.com/RebeccaHull/causal_inference/blob/milestone-15/presentations/Intermediate_CI_Presentation_Hull.qmd).
 To summarize some feedback:
 
 - I need to make sure my salary histogram does not have a bin nor data
@@ -534,7 +540,8 @@ employed?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.pn
 If anyone answered “no” to these first 3 questions, the survey ended for
 them. I wanted to make sure that respondents were adults with jobs (so
 they have money for considering flights) and have had experience with
-the airline industry.
+the airline industry. 25 people continued with the survey because they
+answered yes to each of the 3 preliminary questions.
 
 ![How often do you
 fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
@@ -542,23 +549,45 @@ fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%
 ![Why do you
 fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Travel%20Reason_%20Chart.png)
 
+Most people travel once - a few times a year. Most people travel either
+to see family and friends or for vacation.
+
 ![Package Names: Star, Nova,
 Aurora](Loyalty%20Card%20Package%20Options%20-%20Card%20Type%20Chart.png)
+
+Since card name was randomly assigned with benefits to create a package,
+there isn’t anything to glean from this chart.
 
 ![Benefit Grouping
 1](Loyalty%20Card%20Package%20Options%20-%20Benefit%201%20Chart.png)
 
+20% or 25% discount on flight tickets were really desired.
+
 ![Benefit Grouping
 2](Loyalty%20Card%20Package%20Options%20-%20Benefit%202%20Chart.png)
+
+Free seat upgrades and exclusive deals with partner services were much
+more popular than lounge access.
 
 ![Package
 Prices](Loyalty%20Card%20Package%20Options%20-%20Price%20Chart.png)
 
+The most favorable choice was the cheapest package deal per month with
+the least favorable being the most expensive. This makes perfect sense.
+
 ![Attribute
 Importance](Loyalty%20Card%20Package%20Options%20-%20Attribute%20importance%20Chart.png)
 
+Card type was most important out the the 4 attributes, followed by
+benefit 2 (which had lounging, boarding, seating, and exclusive deals)
+and then by benefit 1 (which had discounted tickets and free checked
+bags).
+
 ![Would you buy a loyalty
 card?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Buy%20a%20card_%20Chart.png)
+
+24% of survey respondents would consider buying a loyalty card for
+themselves.
 
 ![What’s your yearly income
 bracket?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Yearly%20Income%20Chart.png)
@@ -569,15 +598,30 @@ level?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Education%20Level%20Chart.pn
 ![What’s your age
 bracket?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Age%20Chart.png)
 
+The majority of survey respondents are young adults who are either still
+in their Bachelors degree (not finished so they may have answered “High
+School or GED”) or have finished and their yearly income is very low
+because they are either newly graduated or still in college.
+
 ![What’s your
 gender?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Gender%20Chart.png)
+
+60% of respondents were female, 40% were male.
 
 ![Are you
 married?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Married_%20Chart.png)
 
+There is nearly a 50-50% split of marital status.
+
 ## Milestone 10: Implement Diff-in-Diff Strategy
 
+The purpose of Difference-in-Differences (Diff-in-Diff) is to estimate
+the causal effect of a treatment or intervention by comparing the
+changes in outcomes over time between a treatment group and a control
+group. I created a synthetic dataset to use this strategy.
+
 ``` python
+# Import Packages
 import arviz as az
 import numpy as np
 import pandas as pd
@@ -690,23 +734,113 @@ A few changes I made:
 
 ## Milestone 12: Matching Strategy
 
-I implemented a matching strategy using propensity scores to see if
-getting a higher loyalty card (Star or Nova) caused an increase in CLV.
-I found a surprising result! Not only did it not increase CLV, it
-actually decreased CLV!
+I implemented a matching strategy on the Airline Loyalty dataset using
+propensity scores to see if getting a higher loyalty card (Star or Nova)
+caused an increase in CLV. The result was surprising! Not only did it
+not increase CLV, it actually **decreased** CLV!
+
+``` python
+# Import Packages
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.neighbors import NearestNeighbors
+import numpy as np
+
+# Load your data
+df = pd.read_csv("data/CLV.csv")
+
+# Step 1: Filter dataset
+# Keep only people with Aurora, Nova, or Star
+df = df[df['Loyalty Card'].isin(['Aurora', 'Nova', 'Star'])]
+
+# Optional: Filter out cancellations unless they upgraded
+# This will require you to define what "upgraded" means and check for card progression
+# For now, let’s filter out all cancellations for simplicity
+df = df[df['Cancellation Year'].isna()]
+
+# Step 2: Define treatment variable
+df['treatment'] = df['Loyalty Card'].apply(lambda x: 1 if x in ['Nova', 'Star'] else 0)
+
+# Step 3: Select covariates
+covariates = ['Country', 'Province', 'City', 'Postal Code', 'Gender', 'Education', 
+              'Marital Status', 'Enrollment Type', 'Enrollment Year', 'Enrollment Month', 'Salary']
+
+# Handle missing salary with median imputation
+imputer = SimpleImputer(strategy='median')
+df['Salary'] = imputer.fit_transform(df[['Salary']])
+
+# One-hot encode categorical variables
+df_encoded = pd.get_dummies(df[covariates], drop_first=True)
+
+# Step 4: Estimate propensity scores
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_encoded)
+
+log_reg = LogisticRegression(max_iter=1000)
+log_reg.fit(X_scaled, df['treatment'])
+df['propensity_score'] = log_reg.predict_proba(X_scaled)[:, 1]
+
+# Step 5: Matching using Nearest Neighbors
+treated = df[df['treatment'] == 1]
+control = df[df['treatment'] == 0]
+
+# Match each treated unit to the nearest control unit
+nn = NearestNeighbors(n_neighbors=1)
+nn.fit(control[['propensity_score']])
+distances, indices = nn.kneighbors(treated[['propensity_score']])
+
+matched_control = control.iloc[indices.flatten()].copy()
+matched_treated = treated.reset_index(drop=True)
+
+# Step 6: Compare outcomes
+matched_df = pd.concat([matched_treated, matched_control])
+print("Average CLV - Treated:", matched_treated['CLV'].mean())
+print("Average CLV - Matched Control:", matched_control['CLV'].mean())
+print("Estimated treatment effect on CLV:", matched_treated['CLV'].mean() - matched_control['CLV'].mean())
+```
+
+Average Treated CLV (upgrade to Nova or Star): \$7,282.51
+
+Average Matched Control CLV (Aurora): \$10,817.40
+
+**Estimated treatment effect on CLV: \$-3,534.89**
+
+*Possible Reasons Behind the Results:*
+
+- Card upgrades may be a **response to low CLV**, not the cause —
+  companies might give better cards to underperforming customers to
+  boost engagement.
+
+- **Unobserved factors** like shopping frequency could still bias
+  results, even with matching.
+
+- **Aurora users might naturally have higher CLV**, possibly because
+  they’re long-time or high-value customers who never needed an upgrade.
+
+- If there are **very few Aurora members**, the matched control group
+  could be small and skewed by outliers with unusually high CLV.
+
+From this, I believe people with higher-tier cards (Nova or Star) have
+**lower** CLV than similar people with Aurora cards. This is most likely
+due to a small percentage of Aurora members. Only 20.5% of the dataset
+customers had Aurora cards.
 
 ## Milestone 13: Regression Discontinuity and Marginal Effects
 
 I do not think these apply to this project. To see if regression
 discontinuity made sense, I graphed salary vs CLV and there is not a
-clear cutoff or discontinuity. It was fun learning about this concept
-though!
+clear cutoff or discontinuity in the scatterplot. It was fun learning
+about this concept though!
 
 ## Milestone 14: Final Presentation
 
-I created my final presentation!
+I created my final presentation and presented it to the class!
 
 ## Milestone 15: Finish Report and GitHub Pages
 
 I finished my report and created my GitHUb page to represent my
 portfolio!
+
+Linear Regression Results on my Dataset:
