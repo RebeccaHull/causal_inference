@@ -1,0 +1,12 @@
+project:
+  type: website
+
+website:
+  title: "Causal Inference Report"
+  navbar: false
+  page-navigation: true
+
+  # This makes sure the writing/report.qmd will be included
+  sidebar:
+    contents:
+      - writing/report.qmd
