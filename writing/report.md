@@ -24,11 +24,11 @@ highest, and Aurora is third highest. In the data, only these 3
 loyalties are listed.
 
 The outcome would be positive and continuous values because it’s how
-much revenue is expected to be made under the CLV. Other predictor
-variables that could influence CLV is salary, education level, marital
-status, total flights, and enrollment year/month. Other variables that
-could influence our outcome could be country of residence, gender,
-distance traveled, points redeemed, and dollar cost of points redeemed.
+much revenue is expected to be made under the CLV. Predictor variables
+that could influence CLV is salary, education level, marital status,
+total flights, and enrollment year/month. Other variables that could
+influence our outcome could be country of residence, gender, distance
+traveled, points redeemed, and dollar cost of points redeemed.
 
 My story is that I believe that having a loyalty card increases the
 revenue you will make for the airline.
@@ -50,10 +50,43 @@ points/economic aspects.
 
 ![Second Iteration of Initial Old DAG](Old_DAG_Updated.png)
 
+I updated my DAG throughout the project and finalized it using Dagitty
+to give it a more polished and professional appearance. In this final
+DAG, the primary relationship I’m interested in is the effect of
+**loyalty card status** on **Customer Lifetime Value (CLV)**.
+
+Several other variables influence this relationship. **Travel
+frequency** plays a key role—it affects loyalty card status because
+people who travel more frequently are more likely to seek the benefits
+that come with being a frequent flyer. It also influences total **flight
+distance**, since more trips naturally lead to a greater accumulated
+distance. In turn, total flight distance affects CLV, as longer flights
+tend to be more expensive and generate more revenue for the airline.
+
+**Income** is another upstream variable that influences travel frequency
+(higher income typically enables more travel), loyalty card status (some
+tiers may come with fees or require higher spending), and influences CLV
+(wealthier customers may spend more with the airline overall).
+
+**Company marketing strategy** also feeds into the system by affecting
+travel frequency (e.g., through increased exposure to promotions),
+customer engagement, and loyalty card status (via targeted advertising).
+All of these, in turn, impact CLV. **Customer engagement** directly
+affects both loyalty card status and CLV, as more engaged customers are
+more likely to enroll in loyalty programs and continue spending.
+
+Finally, loyalty card status also affects **upgrades/perks** and
+**length of enrollment**, both of which can enhance a customer’s
+experience and increase their overall value to the airline, thereby
+contributing to CLV.
+
+![DAG](DagittyDAG.png)
+
 ## Milestone 4: Identification Strategy
 
 Based on the DAG, here are all possible paths (23 paths) from LCS
-(Loyalty Card Status) to CLV (Customer Lifetime Value):
+(Loyalty Card Status) to CLV (Customer Lifetime Value). For simplicity,
+initials are used instead of the full names from the DAG.
 
 - LCS, CLV
 - LCS, I, CLV
@@ -79,7 +112,7 @@ Based on the DAG, here are all possible paths (23 paths) from LCS
 - LCS, UP, CLV
 - LCS, LTE, CLV
 
-Direct pipes, Can estimate total causal effect through them
+Direct pipes - can estimate total causal effect through them
 
 - LCS, UP, CLV
 - LCS, LTE, CLV
@@ -88,40 +121,42 @@ Here are the backdoors & what to do about them:
 
 - LCS, I, CLV – Fork, Condition on I
 - LCS, I, TF, CLV – Fork, Pipe, Condition on TF
-- LCS, I, TF, FD, CLV – Fork, Pipe, Pipe, Condition on FD (?)
+- LCS, I, TF, FD, CLV – Fork, Pipe, Pipe, Condition on FD
 - LCS, I, TF, CMS, CLV –Fork, Collider, Fork, Condition on CMS
 - LCS, I, TF, CMS, CE, CLV – Fork, Collider, Fork, Pipe, Condition on CE
   (??)
 - LCS, TF, CLV – Fork, Condition on TF
 - LCS, TF, I, CLV – Fork, Pipe, Condition on I
-- LCS, TF, FD, CLV – Fork, Pipe, Condition on FD (?)
+- LCS, TF, FD, CLV – Fork, Pipe, Condition on FD
 - LSC, TF, CMS, CLV – Pipe, Fork, Condition on CMS
 - LCS, TF, CMS, CE, CLV – Pipe, Fork, Pipe, Condition on CE
 - LCS, CMS, CLV – Fork, Condition on CMS
-- LCS, CMS, CE, CLV – Fork, Pipe, Condition on CE (?)
-- LCS, CMS, TF, CLV – Fork, Pipe, Condition on CMS (?)
-- LCS, CMS, TF, FD, CLV – Fork, Pipe, Pipe, Condition on CMS & TF (??)
+- LCS, CMS, CE, CLV – Fork, Pipe, Condition on CE
+- LCS, CMS, TF, CLV – Fork, Pipe, Condition on CMS
+- LCS, CMS, TF, FD, CLV – Fork, Pipe, Pipe, Condition on CMS & TF
 - LCS, CMS, TF, I, CLV – Fork, Collider, Fork, Condition on CMS, TF, & I
-  (all are needed in the end I believe) (?)
 - LCS, CE, CLV – Fork, Condition on CE
 - LCS, CE, CMS, CLV – Pipe, Fork, Condition on CE or CMS
 - LCS, CE, CMS, TF, CLV – Pipe, Fork, Pipe, Condition on CE or CMS or TF
-  (all are needed in the end I believe) (?)
 - LCS, CE, CMS, TF, FD, CLV – Pipe, Fork, Pipe, Pipe, Condition on CE or
-  CMS or TF (all are needed in the end I believe) (?)
+  CMS or TF
 - LCS, CE, CMS, TF, I, CLV – Pipe, Fork, Collider, Fork, Condition on CE
-  or CMS or TF or I (all are needed in the end I believe) (?)
+  or CMS or TF or I
 
-Adjustment Set: I, TF, CMS, and CE.
+Adjustment Set: I, TF, CMS, and CE. In order to do causal inference, I
+need to condition on income, travel frequency, customer marketing
+strategy, and customer engagement.
 
 ## Milestone 5: Simulate Data and Recover Parameters
 
 ``` python
+# Import packages
 import numpy as np
 import polars as pl
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 
+# Set random seed for reproducibility
 np.random.seed(42)
 
 # Set the parameter values.
@@ -214,10 +249,11 @@ relationship between the predictors and CLV.
 
 ## Milestone 6: Exploratory Data Analysis
 
-Loyalty Card Status is whether or not you have an airline loyalty card,
-whether that’s Star, Nova, or Aurora. Here is a break down of the data
-by type of loyalty card. We can see that most people have the highest
-loyalty card, Star, followed by Nova and then by Aurora.
+**Loyalty Card Status:** Loyalty Card Status is which airline loyalty
+card you have, whether that’s Star, Nova, or Aurora. Here is a break
+down of the data by type of loyalty card. We can see that most people
+have the highest loyalty card, Star, followed by Nova and then by
+Aurora.
 
 ``` python
 # Create a bar plot for loyalty_card_status
@@ -243,9 +279,9 @@ plt.savefig('loyalty_card_distribution_bar_chart.png', dpi=300, bbox_inches='tig
 ![Loyalty Card Status Bar
 Chart](loyalty_card_distribution_bar_chart.png)
 
-Most people have an income between roughly \$80,000 and \$125,000. This
-is expected. There are of course some who have higher salaries, hence
-the right skew.
+**Income:** Most people have an income between roughly \$80,000 and
+\$125,000, which makes sense. There are of course some who have higher
+salaries, hence the right skew.
 
 ``` python
 # Clean the data by removing null, empty, and negative salary values
@@ -264,12 +300,13 @@ plt.savefig('../figures/salary_histogram.png', dpi=300, bbox_inches='tight')
 
 ![Salary Histogram](hist_of_salary.png)
 
-Travel Frequency is how frequently a person travels. I do not have this
-variable in my dataset.
+**Travel Frequency:** This is how frequently a person travels. I do not
+have this variable in my dataset.
 
-Customer Marketing Strategy is how well the airline markets their
-products. I don’t have a direct variable for this in my dataset but I do
-know which enrollment types people did when they got a loyalty card.
+**Customer Marketing Strategy:** This is how well the airline markets
+their products. I don’t have a direct variable for this in my dataset
+but I do know which enrollment type people did when they got a loyalty
+card as well as which loyalty card.
 
 ``` python
 # Create a bar plot for Enrollment Type
@@ -294,10 +331,10 @@ plt.savefig('../figures/enrollment_type_bar_chart.png', dpi=300, bbox_inches='ti
 
 ![Enrollment Type Bar Chart](enrollment_type_bar_chart.png)
 
-Customer Engagement is how engaged a person is in the airline. I do not
-have this variable in my dataset.
+**Customer Engagement:** This is how involved a person is with the
+airline. I do not have this variable in my dataset.
 
-CLV is Customer Lifetime Value, or how much revenue a single person
+**CLV:** Customer Lifetime Value is how much revenue a single person
 generates the airline company. It seems that most people earn the
 airline between roughly \$2,000 and \$15,000.
 
@@ -321,6 +358,20 @@ plt.savefig('../figures/clv_histogram.png', dpi=300, bbox_inches='tight')
 ![CLV Histogram](hist_clv.png)
 
 ## Milestone 7: Estimate Causal Effects
+
+In this milestone, we estimate the causal effects of several
+customer-related factors on Customer Lifetime Value (CLV) using a
+Bayesian linear regression approach. We start by simulating a dataset
+with realistic variability in customer behavior, including features such
+as flight distance, travel frequency, marketing strategy engagement, and
+loyalty card status. We then specify a probabilistic model using PyMC,
+assigning priors to the intercept and coefficients, and defining a
+likelihood function based on the simulated CLV data. After sampling from
+the posterior distribution, we summarize the results and visualize the
+marginal posterior distributions to assess parameter uncertainty and
+convergence. This modeling approach allows for more nuanced inference
+compared to traditional frequentist methods, particularly when
+quantifying uncertainty around effect estimates.
 
 ``` python
 # eval: false
@@ -387,9 +438,6 @@ with pm.Model() as clv_model:
 summary = az.summary(trace, round_to=2)
 print(summary)
 
-# Visualizing the marginal posteriors
-az.plot_trace(trace, combined=True)
-
 
 # Save the figure as a file
 plt.savefig("../figures/trace_plot.png", dpi=300, bbox_inches="tight")
@@ -406,31 +454,54 @@ Jupyter support
 
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 
-    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 63 seconds.
+    Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 69 seconds.
 
                  mean    sd    hdi_3%   hdi_97%  mcse_mean  mcse_sd  ess_bulk  \
-    alpha     1001.54  1.58    998.55   1004.50       0.03     0.02   2073.61   
-    beta[0]  69999.86  0.16  69999.55  70000.16       0.00     0.00   3172.77   
-    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3162.71   
-    beta[2]      5.11  0.13      4.88      5.36       0.00     0.00   2750.57   
-    beta[3]      0.87  0.24      0.45      1.34       0.00     0.00   3211.19   
-    beta[4]      2.71  0.11      2.50      2.92       0.00     0.00   3788.70   
-    beta[5]   1000.15  0.65    998.97   1001.39       0.01     0.01   2609.00   
-    sigma        3.15  0.24      2.72      3.60       0.00     0.00   2977.16   
+    alpha     1001.58  1.55    998.63   1004.42       0.03     0.02   1997.99   
+    beta[0]  69999.86  0.16  69999.57  70000.16       0.00     0.00   3256.60   
+    beta[1]   3500.00  0.00   3500.00   3500.00       0.00     0.00   3000.73   
+    beta[2]      5.11  0.13      4.88      5.35       0.00     0.00   2916.16   
+    beta[3]      0.88  0.23      0.45      1.31       0.00     0.00   2706.60   
+    beta[4]      2.72  0.12      2.50      2.94       0.00     0.00   3031.66   
+    beta[5]   1000.14  0.68    998.91   1001.45       0.01     0.01   3568.40   
+    sigma        3.15  0.24      2.73      3.60       0.00     0.00   3777.89   
 
              ess_tail  r_hat  
-    alpha     2407.12    1.0  
-    beta[0]   2532.05    1.0  
-    beta[1]   2736.14    1.0  
-    beta[2]   2775.74    1.0  
-    beta[3]   2669.58    1.0  
-    beta[4]   2956.56    1.0  
-    beta[5]   2576.18    1.0  
-    sigma     2596.37    1.0  
+    alpha     2237.46    1.0  
+    beta[0]   2705.62    1.0  
+    beta[1]   2719.65    1.0  
+    beta[2]   2784.36    1.0  
+    beta[3]   2629.60    1.0  
+    beta[4]   2421.33    1.0  
+    beta[5]   2998.96    1.0  
+    sigma     2810.31    1.0  
 
-![](report_files/figure-commonmark/cell-7-output-6.png)
+    <Figure size 672x480 with 0 Axes>
 
 ![trace plot](trace_plot.png)
+
+The posterior summary shows that the model recovered the true parameter
+values with high accuracy and precision. All estimated coefficients are
+very close to the values used in the data-generating process. For
+instance, beta\[0\] (the coefficient on x) is estimated at 69,999.86,
+nearly identical to the true value of 70,000, and beta\[1\] for
+flight_dist is exactly 3500.00, with virtually no variation. The same
+holds for beta\[5\] (loyalty_card_status), which was set to 1000 and
+estimated at 1000.14.
+
+The standard deviations and HDIs (highest density intervals) around
+these estimates are quite narrow, suggesting low uncertainty and strong
+signal in the data. The noise parameter sigma is estimated at 3.14,
+closely matching the standard deviation of the noise added during
+simulation. Additionally, convergence diagnostics are
+excellent—$\hat{R}$ values are all 1.0, and effective sample sizes (ESS)
+are comfortably high, indicating stable and reliable inference across
+chains.
+
+From a causal perspective, these results are encouraging. The fact that
+the posterior means align closely with the known data-generating values
+suggests that the model can reliably recover true causal effects when
+the assumptions are met.
 
 ## Milestone 8: Intermediate Presentation
 
@@ -441,8 +512,8 @@ To summarize some feedback:
 - I need to make sure my salary histogram does not have a bin nor data
   that goes below 0.
 - I need to make sure that my CLV histogram has touching bars.
-  Additionally, set the number of bins to something that makes sense for
-  the data (so in my case, more bins).
+  Additionally, I need to set the number of bins to something that makes
+  sense for the data (so in my case, more bins).
 
 ## Milestone 9: Run Conjoint Experiment
 
@@ -459,6 +530,11 @@ employed?](Airline%20Loyalty%20Conjoint%20Survey%20-%20Employed%20rn_%20Chart.pn
 
 ![Are you
 18+?](Airline%20Loyalty%20Conjoint%20Survey%20-%2018_plus_%20Chart.png)
+
+If anyone answered “no” to these first 3 questions, the survey ended for
+them. I wanted to make sure that respondents were adults with jobs (so
+they have money for considering flights) and have had experience with
+the airline industry.
 
 ![How often do you
 fly?](Airline%20Loyalty%20Conjoint%20Survey%20-%20How%20often%20do%20you%20fly_%20Chart.png)
@@ -611,38 +687,6 @@ A few changes I made:
 
 - The Salary histogram no longer has a bin below zero (since you can’t
   have a negative salary).
-
-I updated my DAG throughout the project and finalized it using Dagitty
-to give it a more polished and professional appearance. In the DAG, the
-primary relationship I’m interested in is the effect of **loyalty card
-status** on **Customer Lifetime Value (CLV)**.
-
-Several other variables influence this relationship. **Travel
-frequency** plays a key role—it affects loyalty card status because
-people who travel more frequently are more likely to seek the benefits
-that come with being a frequent flyer. It also influences total **flight
-distance**, since more trips naturally lead to a greater accumulated
-distance. In turn, total flight distance affects CLV, as longer flights
-tend to be more expensive and generate more revenue for the airline.
-
-**Income** is another upstream variable that influences travel frequency
-(higher income typically enables more travel), loyalty card status (some
-tiers may come with fees or require higher spending), and influences CLV
-(wealthier customers may spend more with the airline overall).
-
-**Company marketing strategy** also feeds into the system by affecting
-travel frequency (e.g., through increased exposure to promotions),
-customer engagement, and loyalty card status (via targeted advertising).
-All of these, in turn, impact CLV. **Customer engagement** directly
-affects both loyalty card status and CLV, as more engaged customers are
-more likely to enroll in loyalty programs and continue spending.
-
-Finally, loyalty card status also affects **upgrades/perks** and
-**length of enrollment**, both of which can enhance a customer’s
-experience and increase their overall value to the airline, thereby
-contributing to CLV.
-
-![DAG](DagittyDAG.png)
 
 ## Milestone 12: Matching Strategy
 
