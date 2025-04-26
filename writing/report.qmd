@@ -8,7 +8,7 @@ header-includes:
   - |
     <style>
       body {
-        background-color: #aecdfc;  /* Light blue background */
+        background-color: #f7f9fc;  /* gray-white background */
       }
     </style>
 ---
