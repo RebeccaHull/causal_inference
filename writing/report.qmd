@@ -1,6 +1,9 @@
 ---
 title: "Airline Loyalty Causal Inference"
-format: gfm
+format:
+  html:
+    theme: flatly
+    toc: true
 ---
 
 ## Milestone 1: Project Idea
