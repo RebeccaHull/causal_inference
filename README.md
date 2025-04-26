@@ -27,6 +27,8 @@ revenue you will make for the airline.
 
 https://www.kaggle.com/datasets/agungpambudi/airline-loyalty-campaign-program-impact-on-flights/data
 
+To see my project report on Github Pages: https://rebeccahull.github.io/causal_inference/
+
 ## Project Organization
 
 - `/code` Scripts with prefixes (e.g., `01_import-data.py`,
