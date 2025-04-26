@@ -1,9 +1,16 @@
 ---
-title: "Airline Loyalty Causal Inference"
+title: "My Report"
 format:
   html:
     theme: journal
     toc: true
+header-includes:
+  - |
+    <style>
+      body {
+        background-color: #aecdfc;  /* Light blue background */
+      }
+    </style>
 ---
 
 ## Milestone 1: Project Idea
