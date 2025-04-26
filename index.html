@@ -1,9 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="refresh" content="0; URL='writing/report.html'" />
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="2; URL='writing/report.html'" />
+    <title>Loading Report...</title>
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding-top: 20%;
+      }
+      .spinner {
+        margin-top: 20px;
+        width: 40px;
+        height: 40px;
+        border: 5px solid #ccc;
+        border-top-color: #333;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
+    <h1>Loading your report...</h1>
+    <div class="spinner"></div>
     <p>If you are not redirected, <a href="writing/report.html">click here</a>.</p>
   </body>
 </html>
