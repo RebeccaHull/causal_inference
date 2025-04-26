@@ -2,7 +2,7 @@
 title: "Airline Loyalty Causal Inference"
 format:
   html:
-    theme: cosmo
+    theme: journal
     toc: true
 ---
 
